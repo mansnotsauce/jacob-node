@@ -1,0 +1,457 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900');
+
+body {
+	font-family: 'Montserrat';
+	background: #f8f8f8;
+}
+.page-background {
+	background: url('/assets/images/login-bg.jpg');
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	padding: 100px 0px;
+}
+.bluetext {
+	color: #569cd4;
+}
+
+.logout {
+	background: #569cd4;
+	color: #fff;
+	font-weight: bold;
+	position: fixed;
+	right: 10px;
+	top: 0px;
+	padding: 10px 28px;
+	z-index: 1;
+}
+
+.button, .upload-btn {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	border: 0px;
+	border-radius: 10px;
+	text-transform: uppercase;
+	font-size: 16.5px;
+	width: 185px;
+	height: 53px;
+	line-height: 53px;
+	color: #fff;
+	background: #569cd4;
+	border: 2px solid #569cd4;
+	transition: all 0.3s ease-in-out;
+}
+.button:hover, .upload-btn:hover {
+	text-decoration: none;
+	background-color: transparent;
+	color: #569cd4;
+}
+.button input[type=file], .upload-btn input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	transform: translate(-300px, 0) scale(4);
+	font-size: 23px;
+	direction: ltr;
+	cursor: pointer;
+	height: 40px;
+}
+.button.upload {
+	text-align: left;
+	padding-left: 70px;
+	line-height: 1;
+}
+.button.upload:before {
+	content: " ";
+	display: block;
+	position: absolute;
+	background: url('img/icons/upload-ic20.png') no-repeat center;
+	left: 0px;
+	top: 0px;
+	width: 60px;
+	height: 51px;
+	border-right: 1px solid #4e8fc5;
+}
+
+.button.upload:hover {
+    background-color: transparent;
+    color: #569cd4;
+}	
+.button.upload:before {
+    background: url(img/icons/blue-icon.png) no-repeat center;
+
+}
+
+.btn-tax-form {
+    text-align: left;
+    padding-left: 27px;
+}
+.btn-tax-form:hover img {
+	display: none;
+}
+.btn-tax-form:after {    
+	position: absolute;
+	content: "";
+	height: 33px;
+	width: 35px;
+	background: url(img/icons/right_icon-blue.png) no-repeat center;
+	display: block;
+	opacity: 0;
+	top: 13px;
+	right: 18px;
+}
+.btn-tax-form:hover:after {
+	opacity: 1;			
+}
+			
+			
+			
+.btn-signed-document {
+    text-align: left;
+    padding-left: 27px;
+}	
+.btn-signed-document:hover img {
+	display: none;
+}
+.btn-signed-document:after {    
+	position: absolute;
+    content: "";
+    height: 33px;
+    width: 35px;
+    background: url(img/icons/right_icon-blue.png) no-repeat center;
+    display: block;
+    opacity: 0;
+    top: 11px;
+    right: 7px;
+}
+.btn-signed-document:hover:after {
+	opacity: 1;		
+}			
+
+.darkform {
+	background: rgba(59,73,88,0.76);
+	box-shadow: 2px 2px 9px rgba(0,0,0,0.22);
+	text-align: center;
+	padding: 72px;
+	padding-top: 66px;
+	color: #fff;
+	width: 670px;
+	max-width: 100%;
+	margin: auto;
+}
+.darkform.logo h1 {
+	font-weight: 600;
+	font-size: 37px;
+	margin-bottom: 23px;
+}
+.darkform.logo img {
+	width: 300px;
+	max-width: 100%;
+	margin-bottom: 73px;
+}	
+.darkform .logo-login {
+	padding-top: 35px;
+	margin-bottom: 35px;
+}
+.darkform .logo-login h1 {
+	font-weight: 600;
+	font-size: 40px;
+	margin-bottom: 3px;
+}
+.darkform .logo-login img {
+	width: 367px;
+	max-width: 100%;
+}
+.darkform .logo-login h3 {
+	display: block;
+	width: 398px;
+	max-width: 100%;
+	text-align: right;
+	margin: auto;
+	font-size: 26px;
+}
+.darkform h4.login-title {
+	color: #569cd4;
+	text-transform:uppercase;
+	font-weight: bold;
+	font-size: 14px;
+	font-size: 26px;
+}
+form.login {
+	margin: auto;
+	width: 352px;
+	max-width: 100%;
+	margin-top: 35px;
+}
+.darkform form.login input[type=email], .darkform form.login [type=password] {
+	width: 100%;
+	background: transparent;
+	margin-bottom: 6px;
+	border: 1px solid #929292;
+	
+	height: 50px;
+	padding: 0px 24px;
+	margin-bottom: 20px;
+
+	color: #fff;
+}
+.darkform form.login input[type=email]::placeholder, .darkform form.login [type=password]::placeholder { 
+	color: #929292;
+}
+form.login button {
+	width: 100%;
+	background: #569cd4;
+	color: #fff;
+	border: none;
+	height: 50px;
+	font-size: 17px;
+	text-transform: uppercase;
+	border: 2px solid #569cd4;
+	cursor: pointer;
+}
+form.login button:hover {
+	background: transparent;
+}
+form.login label.remember-me {
+    padding-top: 20px;
+}
+.darkform .forgot-password {
+	color: #fff;
+	display: inline-block;
+	margin-top: 19px;
+	margin-bottom: 64px;
+}
+.sunstatus {
+	position: relative;	
+}
+.sunstatus:before {
+	content: " ";
+	display: block;
+	height: 5px;
+	background: #d9e1e6;
+	position: absolute;
+	left: 70px;
+	right: 70px;
+	top: 39px;
+	z-index: 0;
+}
+.sunstatus .row > :first-child {
+	text-align: left;
+}
+.sunstatus .row > :last-child {
+	text-align: right;	
+}
+.completion {
+	font-size: 20px;
+	font-weight: 600;
+	margin-bottom: 70px;
+}
+.onboard-accordion {
+	margin-bottom: 65px;
+}
+.onboard-accordion .accordion-check {
+	margin-right: 35px;
+}
+.onboard-accordion > .ui-accordion-header {
+	position: relative;
+	display: block;
+	background: #569cd4;// url('img/icons/more-arrow.png') no-repeat right;
+	color: #fff;
+	border-radius: 8px;
+	padding: 10px 16px 10px 46px;
+	margin: 0px;
+	margin-top: 10px;
+	text-align: left;
+	cursor: pointer;
+	font-size: 25px;
+	line-height: 60px;			
+}
+.onboard-accordion > .ui-accordion-header .more-arrow {
+	position: absolute;
+	right: 26px;
+	top: 32px;
+}		
+.onboard-accordion > .ui-accordion-header:focus {
+	outline: none;
+}
+.onboard-accordion > .ui-accordion-header-active {
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+.onboard-accordion > div {
+	color: #000;
+	background: #fff;
+	border-radius: 4px;
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+	padding-top: 20px;
+	font-size: 22px;
+	padding-bottom:40px;
+}
+.onboard-accordion > .personal-info {
+	font-size: 16.5px;
+}
+.onboard-accordion > .personal-info .fields-container {
+	margin-bottom: 54px;
+}
+.onboard-accordion .row {
+	padding-top: 25px;
+	text-align: left;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.onboard-accordion input[type=email] {
+	background: #f8f8f8;
+	border: 0px;
+	padding: 10px 10px;
+	font-size: 16.5px;
+	width: 100%;
+}
+.onboard-accordion .required {
+	color: #f00;
+}
+.onboard-accordion .required-error {
+	color: #f00;
+	font-weight: bold;
+}
+.onboard-accordion select {
+	background: #f8f8f8;
+	border: 0px;
+	padding: 10px 10px;
+	font-size: 16.5px;
+	width: 100%;
+}
+.onboard-accordion .buttons-photo-id button {
+	background-color: #569cd4;
+	color: #fff;
+	border: 2px solid #569cd4;
+}
+.onboard-accordion .buttons-photo-id button:hover {
+	background-color: transparent;
+	color: #569cd4;
+}
+.onboard-accordion .buttons-photo-id button:hover::before {
+	background: url(img/icons/blue-icon.png) no-repeat center;
+}
+.onboard-accordion .buttons-submit {
+	padding-top: 20px;
+	padding-bottom: 45px;				
+}
+.onboard-accordion .buttons-submit button {
+	background-color: #faa73d;
+	color: #fff;
+    border: 2px solid #faa73d;
+}
+.onboard-accordion .buttons-submit button:hover {
+	background: transparent;
+	color: #faa73d;
+}
+.darkform .quote {
+	font-style: italic;
+	font-size: 17.5px;
+	font-weight: 500;
+}
+footer.footer {
+	background: #f8f8f8;
+    text-align: center;
+    padding-top: 23px;
+    padding-bottom: 14px;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    margin-top: 0;
+}
+footer.footer p ~ img {
+    max-width: 350px;
+}
+
+footer.copyright {
+	text-align: center;
+	color: #fff;
+	padding: 15px 0px;
+}
+#congratulations > .content {
+	padding: 60px 40px 20px 40px;
+	margin: auto;
+	width: 765px;
+	max-width: 90%;
+	text-align: center;
+}
+#congratulations h1 {
+	color: #569cd4;
+	font-weight: 600;
+	font-size: 73px;
+	margin-top: 25px;
+	margin-bottom: 20px;
+}
+#congratulations p {
+	font-size: 30px;
+	font-weight: 600;
+}
+.featherlight .featherlight-content {
+	overflow: hidden;
+	border-radius: 12px;
+}
+#error {
+	color: #fff;
+    padding: 10px 0;
+    background-color: #dc3545;    
+	display: none;
+}
+
+
+@media (max-width:568px){
+	.darkform{
+	 	padding: 0 30px;
+	    width: 100%;
+	}		
+	.darkform .onboard-accordion > .ui-accordion-header {
+	    font-size: 17px;
+		padding: 10px 16px 10px 27px;
+	}
+	.darkform .onboard-accordion > .ui-accordion-header .accordion-check {
+	    margin-right: 7px;
+	}			
+ 	.darkform .onboard-accordion .ui-accordion-content p {
+	    padding: 0 30px;
+	    font-size: 18px;
+	}	
+	.darkform .onboard-accordion .personal-info form .buttons-photo-id ul {
+	    width: 100% !important;
+	    margin: 0 !important;
+	    padding: 0 25px !important;
+	}
+	footer.footer p ~ img {
+	    width: 100%;
+	}
+}
+
+
+@media (max-width:414px){
+	.darkform .onboard-accordion > .ui-accordion-header {
+	    font-size: 14px;
+		padding: 5px 13px;
+	}
+	.darkform .onboard-accordion > .ui-accordion-header .accordion-check {
+        max-width: 18px;
+	}
+	.darkform .onboard-accordion .accordion-check ~ img {
+	        max-width: 18px;
+	}
+	.darkform .onboard-accordion .more-arrow {
+	    right: 11px;
+	    top: 32px;
+	}
+	.darkform .sunstatus .row:last-child {
+	    text-align: right;
+	    padding: 0;
+	}
+}
+
+
+
+
