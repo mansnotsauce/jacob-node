@@ -1,2 +1,10 @@
 phpmyadmin
 assets/images/users
+local
+blib
+log
+node_modules
+config-dev.js
+build
+tmp
+.cache

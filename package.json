@@ -1,0 +1,46 @@
+{
+  "name": "horizonpwr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test",
+    "start": "nodemon --watch index.js --watch src/server index.js",
+    "start:prod": "npm run deploy && cross-env NODE_ENV=production nodemon --watch index.js --watch src/server --watch build/client index.js",
+    "build": "cross-env NODE_ENV=production parcel build index.html --out-dir tmp/client",
+    "prep": "mkdir build && mkdir build/client",
+    "deploy": "npm run build && rm -r build/client && mv tmp/client build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/8balloon/lawbot.git"
+  },
+  "dependencies": {
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "@babel/preset-env": "^7.0.0-beta.54",
+    "@babel/preset-react": "^7.0.0",
+    "axios": "^0.18.0",
+    "babel-plugin-react-require": "^3.0.1",
+    "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
+    "babel-polyfill": "^6.26.0",
+    "cross-env": "^5.2.0",
+    "ip": "^1.1.5",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^4.0.2",
+    "mobx": "^5.6.0",
+    "mobx-react": "^5.4.2",
+    "moment": "^2.24.0",
+    "nodemon": "^1.18.9",
+    "parcel-bundler": "^1.6.2",
+    "prop-types": "^15.7.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.6.3",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
+  }
+}

@@ -1,0 +1,3 @@
+module.exports = {
+    sessionKeyCookieName: 'HORIZONPWRSESSION',
+}
