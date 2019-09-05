@@ -27,10 +27,10 @@ router.post('/logout', async (ctx) => {
     ctx.body = { success: logoutCleared }
 })
 
-router.get('/hosted/:resource', async (ctx) => {
-    const { resource } = ctx.params
+router.get('/assets/:assetType/:resource', async (ctx) => {
+    const { assetType, resource } = ctx.params
     console.log("getting hosted resource", resource)
-    await send(ctx, resource, { root: resolve(__dirname, '../../hosted') })
+    await send(ctx, resource, { root: resolve(__dirname, '../../assets', assetType) })
 })
 
 // router.get('/.well-known/acme-challenge/:resource', async (ctx) => {

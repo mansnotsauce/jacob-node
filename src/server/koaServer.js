@@ -14,7 +14,7 @@ if (!config.isDevMode) {
 }
 
 const openUrls = [ // urls that don't require the user to be logged in
-    '/hosted',
+    '/assets',
     '/login',
 ]
 

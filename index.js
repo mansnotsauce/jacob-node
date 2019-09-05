@@ -7,7 +7,7 @@ const koaServer = require('./src/server/koaServer')
 const koaRouter = require('./src/server/koaRouter')
 
 const routes = koaRouter.stack.map(i => i.path.split(':')[0])
-let createServerCallback = koaServer.callback()
+const koaServerCallback = koaServer.callback()
 
 const createServer = config.isDevMode ? http.createServer : https.createServer
 
@@ -16,6 +16,8 @@ const options = config.isDevMode ? {} : {
     key: fs.readFileSync(`/etc/letsencrypt/live/${config.domainName}/privkey.pem`),
     cert: fs.readFileSync(`/etc/letsencrypt/live/${config.domainName}/cert.pem`),
 }
+
+let createServerCallback = koaServerCallback
 
 if (config.isDevMode) {
     
@@ -30,7 +32,7 @@ if (config.isDevMode) {
     
     createServerCallback = (req, res) => {
         if (routes.some(route => req.url.indexOf(route) === 0)) {
-            createServerCallback(req, res)
+            koaServerCallback(req, res)
         }
         else {
             bundlerRequestListener(req, res)
