@@ -28,7 +28,9 @@ export default function Footer() {
     )
 }
 
-/* <?php if($data['menu-link'] != "Log In" && $data['menu-link'] != "Privacy Policy" && $data['menu-link'] != "Terms of Use"): ?>
+// TODO
+/*
+<?php if($data['menu-link'] != "Log In" && $data['menu-link'] != "Privacy Policy" && $data['menu-link'] != "Terms of Use"): ?>
     <div id="menu-mobile-spacing"></div>
     <div id="menu-mobile">
         <ul className="menu-holder">
@@ -137,4 +139,5 @@ export default function Footer() {
             }                
         }
     </script>
-<?php endif; ?></p> */
+<?php endif; ?></p>
+*/
