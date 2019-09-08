@@ -28,6 +28,7 @@ export default function Login() {
                     <input id="loginPassword" type="password" name="pass" placeholder="Enter Password" required />
                     <button type="submit">Login</button>
                     
+                    {/* TODO */}
                     {/* <div>
                         <label className="remember-me">
                             <input type="checkbox" name="remember" checked={true} />
@@ -36,7 +37,7 @@ export default function Login() {
                     </div> */}
                 </form>
 
-                <a className="forgot-password" href="#">Forget password?</a>
+                <a className="forgot-password" href="#">Forget password?</a> {/* TODO */}
 
                 <p className="quote">“He who is not courageous enough to take the risk will accomplish nothing in life”</p>
                 <p>-Muhammad Ali</p>

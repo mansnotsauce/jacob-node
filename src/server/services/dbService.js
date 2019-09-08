@@ -1,3 +1,15 @@
+const mysql = require('mysql')
+const config = require('../../../config')
+
+const connection = mysql.createConnection({
+    host    : config.dbHost,
+    user    : config.dbUser,
+    password: config.dbPassword,
+    database: config.databaseName,
+})
+
+connection.connect()
+
 const run = (sql, params = {}) => new Promise((resolve, reject) => {
     throw new Error("NOT YET IMPLEMEBTED: RUN")
     db.run(sql, params, function cb(err) {
