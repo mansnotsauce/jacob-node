@@ -5,7 +5,13 @@ async function doRequest({ method, url, data }) {
     if (data) params.data = data
     try {
         const result = await axios(params)
-        return result.data
+        if (result.data.error) {
+            console.log({ error: result.data.error })
+            alert(result.data.error.message)
+        }
+        else {
+            return result.data
+        }
     }
     catch (error) {
         alert(error.message)

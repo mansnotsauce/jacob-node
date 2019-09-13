@@ -8,3 +8,4 @@ config-dev.js
 build
 tmp
 .cache
+.vscode/

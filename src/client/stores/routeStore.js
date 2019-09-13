@@ -11,6 +11,6 @@ export default store({
             this.pathname = pathname
             this.search = search
             this.hash = hash
-        }
+        },
     }
 })

@@ -1,40 +1,48 @@
 const mysql = require('mysql')
 const config = require('../../../config')
+const schema = require('../schema')
 
 const connection = mysql.createConnection({
     host    : config.dbHost,
     user    : config.dbUser,
     password: config.dbPassword,
-    database: config.databaseName,
+    database: config.dbName,
 })
 
 connection.connect()
 
-const run = (sql, params = {}) => new Promise((resolve, reject) => {
-    throw new Error("NOT YET IMPLEMEBTED: RUN")
-    db.run(sql, params, function cb(err) {
-        err ? reject(err) : resolve({
-            insertedId: this.lastID || null,
-            rowsChangedCount: this.count || 0,
-        })
-    })
+let initialized = false
+const toResolve = []
+const waitForInitialization = () => new Promise((resolve, reject) => {
+    if (initialized) return resolve()
+    toResolve.push(resolve)
 })
-const getRow = (sql, params = {}) => new Promise((resolve, reject) => {
-    throw new Error("NOT YET IMPLEMENTED: GETROW")
-    db.get(sql, params, function cb(err, row) {
-        err ? reject(err) : resolve(row)
-    })
-    
-})
-const getRows = (sql, params = {}) => new Promise((resolve, reject) => {
-    throw new Error("NOT YET IMPLEMENTED: GET ROWS")
-    db.all(sql, params, function cb(err, rows) {
-        err ? reject(err) : resolve(rows)
+
+const query = (query, values = [], otherParams = {}) => new Promise(async (resolve, reject) => {
+    if (!otherParams.skipInitCheck) {
+        await waitForInitialization()
+    }
+    connection.query(query, values, (error, result/*, fields*/) => {
+        if (error) return reject(error)
+        if (Array.isArray(result)) {
+            resolve(result)
+        }
+        else if (result.insertId || typeof result.insertId === 'number') {
+            resolve({ insertId: result.insertId })
+        }
+        else {
+            console.error('Unrecognized result structure from query', { query, result })
+            reject(new Error('Unrecognized query result structure'))
+        }
     })
 })
 
-module.exports = {
-    run,
-    getRow,
-    getRows,
-}
+const dbService = { query }
+
+;(async () => {
+    await schema.initialize(dbService)
+    initialized = true
+    toResolve.forEach(resolve => resolve())
+})();
+
+module.exports = dbService

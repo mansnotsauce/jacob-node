@@ -31,8 +31,24 @@ async function authMiddleware(ctx, next) {
     await next()
 }
 
+async function errorHandlingMiddleware(ctx, next) {
+    try {
+        await next()
+    }
+    catch (error) {
+        ctx.status = 200
+        ctx.body = {
+            error: {
+                message: error.message,
+                stack: error.stack.split('\n'),
+            }
+        }
+    }
+}
+
 app.use(bodyparser())
 app.use(authMiddleware)
+app.use(errorHandlingMiddleware)
 app.use(router.routes())
 app.use(router.allowedMethods())
 

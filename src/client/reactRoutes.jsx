@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { emit, view } from './framework'
 import routeStore from './stores/routeStore'
 import sessionStore from './stores/sessionStore'
+import Header from './views/header'
 import Footer from './views/footer'
 import Login from './views/login'
 import Home from './views/home'
@@ -17,6 +18,7 @@ const Routes = view(function Routes() {
     
     return (
         <div>
+            <Header />
             <Switch>
                 <Route path="/login" render={() => {
                     return  isLoggedIn ? <Redirect to="/home" /> : <Login />
@@ -39,6 +41,11 @@ export default class RoutesWrapper extends React.Component {
 
     static propTypes = {
         location: PropTypes.object.isRequired
+    }
+
+    componentDidMount() {
+        const { pathname, search, hash } = this.props.location
+        emit.RouteChanged({ pathname, search, hash })
     }
     
     componentDidUpdate(prevProps) {

@@ -5,26 +5,25 @@ const constants = require('../constants')
 const sessionService = require('./services/sessionService')
 
 router.post('/login', async (ctx) => {
-    const { username, password } = ctx.request.body
-    
-    const { sessionKey } = await sessionService.login({ username, password })
-    
-    if (!sessionKey) {
-        ctx.body = { success: false }
-        return
+    const { email, password } = ctx.request.body
+    try {
+        const { sessionKey } = await sessionService.login({ email, password })
+        ctx.cookies.set(constants.sessionKeyCookieName, sessionKey, { overwrite: true })
+        ctx.body = { success: true }
     }
-    
-    // ctx.cookies.set(constants.sessionKeyCookieName, sessionKey, { httpOnly: false, overwrite: true })
-    // console.log(ctx.cookies.get(constants.sessionKeyCookieName, sessionKey))
-    console.log(constants.sessionKeyCookieName, sessionKey, { httpOnly: false, overwrite: true })
-    // ctx.cookies.set(constants.sessionKeyCookieName.toString(), sessionKey.toString(), { httpOnly: false, overwrite: true })
-    ctx.cookies.set(constants.sessionKeyCookieName, sessionKey, { overwrite: true })
-    ctx.body = { success: true }
+    catch (error) {
+        ctx.body = { success: false }
+    }
 })
 
 router.post('/logout', async (ctx) => {
-    const logoutCleared = await sessionService.logout(ctx.cookies.get(constants.sessionKeyCookieName))
-    ctx.body = { success: logoutCleared }
+    await sessionService.logout(ctx.cookies.get(constants.sessionKeyCookieName))
+    ctx.body = { ok: true }
+})
+
+router.get('/loginStatus', async (ctx) => {
+    const isLoggedIn = await sessionService.isLoggedIn(ctx.cookies.get(constants.sessionKeyCookieName))
+    ctx.body = { isLoggedIn }
 })
 
 router.get('/assets/:assetType/:resource', async (ctx) => {
