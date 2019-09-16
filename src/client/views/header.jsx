@@ -3,27 +3,35 @@ import sessionStore from '../stores/sessionStore'
 
 export default view(function Header() {
     return (
-        <div>
+        <div id="header">
             {
                 sessionStore.isLoggedIn ?
                     <div id="signoutbox">
-                        <a onClick={() => emit.LoggedOut()}>
+                        <a onClick={() => emit.ClickedLogout()}>
                             <span className="signout">Sign out</span>
                         </a>
                         <a onClick={() => {}}>
                             {/*TODO*/}
-                            {/* <div class="so-prof-img" style="background-image:url(<?php echo $_SESSION['user']['picture']; ?>);" /> */}
+                            {/* <div className="so-prof-img" style="background-image:url(<?php echo $_SESSION['user']['picture']; ?>);" /> */}
                         </a>
+                        {
+                            sessionStore.userId !== null ?
+                                <div className="so-prof-img" style={{ backgroundImage: `url(/hosted/users/${sessionStore.userId}/profilePicture.png)` }} />
+                            : null
+                        }
                     </div>
                 : null
             }
-            {/*TODO*/}
-            {/* <div class="mini-container container">
-                <h1 class="center">
-                    <span class="colorBlue"><?php echo ucfirst($_SESSION['user']['name_arr'][0]); ?></span>, Welcome to the PWR Station
-                </h1>
-                <h2>powered by <img src="/assets/images/logo-horizon.png"></h2>
-            </div> */}
+            {
+                sessionStore.userData && sessionStore.userData.firstName ?
+                    <div className="mini-container container">
+                        <h1 className="center">
+                            <span className="colorBlue">{sessionStore.userData.firstName}</span>, Welcome to the PWR Station
+                        </h1>
+                        <h2>powered by <img src="/assets/images/logo-horizon.png" /></h2>
+                    </div>
+                : null
+            }
         </div>
     )
 })

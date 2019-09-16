@@ -18,7 +18,7 @@ export default function Login() {
                 <h4 className="login-title">Login</h4>
                 <form id="loginform" className="login" method="post" onSubmit={e => {
                     e.preventDefault()
-                    emit.AttemptedLogin({
+                    emit.ClickedLogin({
                         email: document.getElementById('loginEmail').value,
                         password: document.getElementById('loginPassword').value,
                     })

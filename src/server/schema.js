@@ -9,7 +9,8 @@ const schemaQueries = [
         sessionKey varchar(255) not null primary key,
         userId int unsigned not null
     )`,
-    'ALTER TABLE `user` CHANGE COLUMN `id` `userId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;',
+    'ALTER TABLE `user` CHANGE COLUMN `id` `userId` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT',
+    'alter table user add column firstName varchar(255), add column lastName varchar(255)'
 ]
 
 async function initialize(dbService) {

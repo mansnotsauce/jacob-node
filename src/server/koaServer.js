@@ -2,7 +2,7 @@ const { resolve } = require('path')
 const Koa = require('koa')
 const bodyparser = require('koa-bodyparser')
 const config = require('../../config')
-const constants = require('../constants')
+const constants = require('../shared/constants')
 const router = require('./koaRouter')
 const sessionService = require('./services/sessionService')
 
@@ -16,13 +16,14 @@ if (!config.isDevMode) {
 const openUrls = [ // urls that don't require the user to be logged in
     '/assets',
     '/login',
+    '/userStatus',
 ]
 
 async function authMiddleware(ctx, next) {
     if (!openUrls.some(url => ctx.request.url.indexOf(url) === 0)) {
-        const isLoggedIn = await sessionService.isLoggedIn(ctx.cookies.get(constants.sessionKeyCookieName))
+        const isLoggedIn = await sessionService.isLoggedIn(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
         console.log({ isLoggedIn })
-        console.log(ctx.cookies.get(constants.sessionKeyCookieName))
+        console.log(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
         if (!isLoggedIn) {
             ctx.status = 401
             return

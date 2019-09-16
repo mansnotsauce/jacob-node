@@ -437,7 +437,7 @@ ul.menu-holder li .dropdown-menu-nav li:hover {
 	background-color: #569cd4;
 	color: #fff;
 	padding: 15px 20px 15px 45px;
-	background-image: url(/assets/images/icons/add-user-icon.png);
+	background-image: url(/assets/images/add-user-icon.png);
 	background-position: 13px 14px;
 	background-repeat: no-repeat;
 	background-size: 25px auto;
@@ -479,7 +479,7 @@ ul.menu-holder li .dropdown-menu-nav li:hover {
 	z-index: 10;
 }
 .admin-dashboard .table .checkbox span.checked {
-	background-image: url(/assets/images/icons/check.png);
+	background-image: url(/assets/images/check.png);
     background-size: 12px;
     background-repeat: no-repeat;
     background-position: center;
@@ -1009,19 +1009,19 @@ ul.menu-holder li .dropdown-menu-nav li:hover {
     margin-right: 8px;
 }
 .teams-icon .icon-badge {
-    background-image: url(/assets/images/icons/team-ic-blue.svg);
+    background-image: url(/assets/images/team-ic-blue.svg);
     background-color: #fff;
 }
 .teams-icon.active .icon-badge {
-    background-image: url(/assets/images/icons/team-ic-white.svg);       
+    background-image: url(/assets/images/team-ic-white.svg);       
     background-color: #569cd4;          
 }
 .topreps-icon .icon-badge {
-    background-image: url(/assets/images/icons/top-reps-ic-blue.svg);
+    background-image: url(/assets/images/top-reps-ic-blue.svg);
     background-color: #fff;
 }
 .topreps-icon.active .icon-badge {
-    background-image: url(/assets/images/icons/top-reps-ic-white.svg);     
+    background-image: url(/assets/images/top-reps-ic-white.svg);     
     background-color: #569cd4;              
 }
 .toggle-options {

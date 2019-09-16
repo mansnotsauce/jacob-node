@@ -1,7 +1,7 @@
 export default [
-    'AttemptedLogin',
-    'LoggedOut',
+    'ClickedLogin',
+    'ClickedLogout',
     'RouteChanged',
     'Initialized',
-    'DeterminedLoginStatus',
+    'ReceivedUserStatus',
 ]

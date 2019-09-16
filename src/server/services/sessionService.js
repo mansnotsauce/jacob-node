@@ -1,5 +1,6 @@
 const dbService = require('./dbService')
 const cryptoService = require('./cryptoService')
+const userService = require('./userService')
 
 module.exports = {
     
@@ -14,7 +15,8 @@ module.exports = {
             const sessionKey = cryptoService.getRandomSalt()
             await dbService.query('DELETE FROM session WHERE userId = ?', [userId])
             await dbService.query('INSERT INTO session (sessionKey, userId) values (?, ?)', [sessionKey, userId])
-            return { sessionKey }
+            const userData = await userService.getUserData(userId)
+            return { sessionKey, userId, userData }
         }
         else {
             throw new Error('Invalid email/password combination')
@@ -24,16 +26,22 @@ module.exports = {
         await dbService.query('DELETE FROM session WHERE sessionKey = ?', [sessionKey])
     },
     async isLoggedIn(sessionKey) {
-        const [ session ] = await dbService.query('SELECT * FROM session WHERE sessionKey = ?', [sessionKey])
-        return !!session
-    },
-    async getUser(sessionKey) {
         const [ session ] = await dbService.query('SELECT userId FROM session WHERE sessionKey = ?', [sessionKey])
-        if (!session) {
-            throw new Error('Could not retrieve user')
+        if (session) {
+            const { userId } = session
+            const userData = await userService.getUserData(userId)
+            return {
+                isLoggedIn: true,
+                userId,
+                userData,
+            }
         }
-        const { userId } = session
-        const [ user ] = await dbService.query('SELECT * FROM user WHERE userId = ?', [userId])
-        return user
+        else {
+            return {
+                isLoggedIn: false,
+                userId: null,
+                userData: null,
+            }
+        }
     },
 }

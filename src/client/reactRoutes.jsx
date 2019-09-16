@@ -23,7 +23,7 @@ const Routes = view(function Routes() {
                 <Route path="/login" render={() => {
                     return  isLoggedIn ? <Redirect to="/home" /> : <Login />
                 }} />
-                <Route path="/Home" render={() => {
+                <Route path="/home" render={() => {
                     return isLoggedIn ? <Home /> : <Redirect to="/login" />
                 }} />
                 <Route path="/" render={() => {
