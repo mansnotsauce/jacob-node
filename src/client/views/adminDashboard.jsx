@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from '../components/link'
 import constants from '../../shared/constants'
 import { view } from '../framework'
 import sessionStore from '../stores/sessionStore'
