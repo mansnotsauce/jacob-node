@@ -25,7 +25,7 @@ module.exports = {
     async logout(sessionKey) {
         await dbService.query('DELETE FROM session WHERE sessionKey = ?', [sessionKey])
     },
-    async isLoggedIn(sessionKey) {
+    async getUserStatus(sessionKey) {
         const [ session ] = await dbService.query('SELECT userId FROM session WHERE sessionKey = ?', [sessionKey])
         if (session) {
             const { userId } = session

@@ -5,4 +5,6 @@ export default [
     'Initialized',
     'ReceivedUserStatus',
     'ClickedAddNewUser',
+    'ReceivedUsers',
+    'ReceivedTeams',
 ]

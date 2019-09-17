@@ -1,5 +1,5 @@
 import { store, emit } from '../framework'
-import server from '../utils/server'
+import requester from '../requester'
 
 const isLoggedInKey = 'isLoggedIn'
 const userIdKey = 'userId'
@@ -22,7 +22,7 @@ export default store({
 
     eventListeners: {
         async ClickedLogin({ email, password }) {
-            const { isLoggedIn, userId, userData } = await server.post('/login', { email, password })
+            const { isLoggedIn, userId, userData } = await requester.post('/login', { email, password })
             emit.ReceivedUserStatus({ isLoggedIn, userId, userData })
             if (!isLoggedIn) {
                 alert('Login attempt failed')
@@ -30,7 +30,7 @@ export default store({
 
         },
         async ClickedLogout() {
-            await server.post('/logout')
+            await requester.post('/logout')
             emit.ReceivedUserStatus({
                 isLoggedIn  : false,
                 userId      : null,
@@ -38,7 +38,7 @@ export default store({
             })
         },
         async Initialized() {
-            const { isLoggedIn, userId, userData } = await server.get('/userStatus')
+            const { isLoggedIn, userId, userData } = await requester.get('/userStatus')
             emit.ReceivedUserStatus({ isLoggedIn, userId, userData })
         },
         async ReceivedUserStatus({ isLoggedIn, userId, userData }) {

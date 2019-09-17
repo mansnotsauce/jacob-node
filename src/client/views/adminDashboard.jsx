@@ -1,11 +1,12 @@
+import permissionsUtils from '../../shared/permissionsUtils'
 import Link from '../components/link'
-import constants from '../../shared/constants'
 import { view } from '../framework'
 import sessionStore from '../stores/sessionStore'
+import userStore from '../stores/userStore'
 
 export default view(function AdminDashboard() {
 
-    if (!sessionStore.userData || ![ constants.CEO_ROLE, constants.VP_ROLE, constants.SALES_SUPPORT_ROLE, constants.ADMIN_ROLE ].includes(sessionStore.userData.role)) {
+    if (!sessionStore.userData || !permissionsUtils.isAdminRole(sessionStore.userData.role)) {
         return null
     }
 
