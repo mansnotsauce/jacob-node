@@ -1,5 +1,4 @@
 import constants from '../../shared/constants'
-import dashboardLogo from '../../../assets/images/dashboard.svg'
 import { view } from '../framework'
 import routeStore from '../stores/routeStore'
 import sessionStore from '../stores/sessionStore'
@@ -13,13 +12,14 @@ export default class Home extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="menu-desktop">
                 <section id="menu-desktop">
                     <div className="mini-container container">
                         <ul className="menu-holder">
                             <a href="/home">
                                 <li className={routeStore.pathname === '/home' ? 'active' : ''}>
-                                    <img src={dashboardLogo} className="svg icon" />
+                                    <img src="/assets/images/dashboard.svg" className="svg icon" />
+                                    <div className="clear" />
                                     {
                                         (sessionStore.userData && [ constants.CEO_ROLE, constants.VP_ROLE, constants.SALES_SUPPORT_ROLE, constants.ADMIN_ROLE ].includes(sessionStore.userData.role)) ? 'Admin' : 'Dashboard'
                                     }
@@ -28,18 +28,21 @@ export default class Home extends React.Component {
                             <a href="/leaderboard">
                                 <li className={routeStore.pathname === '/leaderboard' ? 'active' : ''}>
                                     <img src="/assets/images/leader-board.svg" className="svg icon" />
+                                    <div className="clear" />
                                     Leader Board
                                 </li>
                             </a>
                             <a href="/training">
                                 <li className={routeStore.pathname === '/training' ? 'active' : ''}>
                                     <img src="/assets/images/training.svg" className="svg icon" />
+                                    <div className="clear" />
                                     Training
                                 </li>
                             </a>
                             <a href="/pwrLine">
                                 <li className={routeStore.pathname === '/pwrLine' ? 'active' : ''}>
                                     <img src="/assets/images/pwr-ic-black.svg" className="svg icon" />
+                                    <div className="clear" />
                                     Pwr Line
                                 </li>
                             </a>
@@ -48,6 +51,8 @@ export default class Home extends React.Component {
                                 onClick={() => this.setState({ moreMenuExpanded: !this.state.moreMenuExpanded })}
                             >
                                 <img src="/assets/images/more.svg" className="svg icon" />
+                                <div className="clear" />
+                                More
                                 <div className="dropdown-menu">
                                     <ul className="dropdown-menu-nav">
                                         {
