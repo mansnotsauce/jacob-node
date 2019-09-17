@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Footer() {
     return (
         <div>
@@ -10,12 +12,12 @@ export default function Footer() {
                         <img src="/assets/images/placeholder-filled-point.png" width="15" height="20" alt="" className="wp-image-26 alignnone size-full" />&nbsp;Headquarters 237 N 2nd E st, Rexburg, ID 83440
                     </p>
                     <p>
-                        <a href="/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#3b4958' }}>Privacy Policy</a> | <a href="/terms-of-use/" target="_blank" rel="noopener noreferrer" style={{ color: '#3b4958' }}>Terms of Use</a>
+                        <Link to="/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#3b4958' }}>Privacy Policy</Link> | <Link to="/terms-of-use/" target="_blank" rel="noopener noreferrer" style={{ color: '#3b4958' }}>Terms of Use</Link>
                     </p>
                     <div className="clear10"></div>
-                    <a href="/">
+                    <Link to="/">
                         <img src="/assets/images/logo-horizon.png" className="bottom-logo" alt="horizonPWR" />
-                    </a>
+                    </Link>
                     <div className="clear30"></div>
                 </div>
             </footer>
@@ -34,18 +36,18 @@ export default function Footer() {
     <div id="menu-mobile-spacing"></div>
     <div id="menu-mobile">
         <ul className="menu-holder">
-            <a href="/"><li <?php if($data['menu-link']=="Dashboard"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/dashboard.svg" className="svg icon"><div className="clear"></div><?php if($_SESSION['role']=="VP" || $_SESSION['role']=="CEO" || $_SESSION['role']=="Sales Support" || $_SESSION['role']=="Admin"): ?>Admin<?php else: ?>Dashboard<?php endif; ?></li></a>
-            <a href="/leaderboard/"><li <?php if($data['menu-link']=="Leaderboard"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/leader-board.svg" className="svg icon"><div className="clear"></div>Leader Board</li></a>
-            <a href="/training/"><li <?php if($data['menu-link']=="Training"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/training.svg" className="svg icon"><div className="clear"></div>Training</li></a>
-            <a href="/pwr-line"><li <?php if($data['menu-link']=="PWR Line"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/pwr-ic-black.svg" className="svg icon"><div className="clear"></div>PWR Line</li></a>
+            <Link to="/"><li <?php if($data['menu-link']=="Dashboard"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/dashboard.svg" className="svg icon"><div className="clear"></div><?php if($_SESSION['role']=="VP" || $_SESSION['role']=="CEO" || $_SESSION['role']=="Sales Support" || $_SESSION['role']=="Admin"): ?>Admin<?php else: ?>Dashboard<?php endif; ?></li></Link>
+            <Link to="/leaderboard/"><li <?php if($data['menu-link']=="Leaderboard"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/leader-board.svg" className="svg icon"><div className="clear"></div>Leader Board</li></Link>
+            <Link to="/training/"><li <?php if($data['menu-link']=="Training"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/training.svg" className="svg icon"><div className="clear"></div>Training</li></Link>
+            <Link to="/pwr-line"><li <?php if($data['menu-link']=="PWR Line"): ?>className="active"<?php endif; ?>><img src="/assets/images/icons/pwr-ic-black.svg" className="svg icon"><div className="clear"></div>PWR Line</li></Link>
             <li className="more-desktop  <?php if($data['menu-link']=="PWR Goals"||$data['menu-link']=="Onboarding"||$data['menu-link']=="Profile"): ?>active<?php endif; ?>"><img src="/assets/images/icons/more.svg" className="svg icon"><div className="clear"></div>More
                 <div className="dropdown-menu">
                     <ul className="dropdown-menu-nav">
                         <?php if($_SESSION['role']=="Manager" || $_SESSION['role']=="Regional" || $_SESSION['role']=="VP" || $_SESSION['role']=="CEO" || $_SESSION['role']=="Sales Support" || $_SESSION['role']=="Admin"): ?>
-                            <a href="/onboarding/"><li>Onboarding</li></a>
+                            <Link to="/onboarding/"><li>Onboarding</li></Link>
                         <?php endif; ?>
-                        <a href="/pwr-goals"><li>PWR Goals</li></a>
-                        <a href="/profile/"><li>Profile</li></a>                        
+                        <Link to="/pwr-goals"><li>PWR Goals</li></Link>
+                        <Link to="/profile/"><li>Profile</li></Link>                        
                     </ul>
                 </div>
             </li>

@@ -2,12 +2,32 @@ import * as React from 'react'
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { emit, view } from './framework'
-import routeStore from './stores/routeStore'
+import routeStore from './stores/routeStore' // leave this
 import sessionStore from './stores/sessionStore'
 import Header from './views/header'
 import Footer from './views/footer'
 import Login from './views/login'
 import Home from './views/home'
+import AdminDashboard from './views/adminDashboard'
+import AddUser from './views/addUser'
+
+const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
+    return (
+        <Home>
+            <Switch>
+                <Route path="/home" render={() => {
+                    return (
+                        <div>
+                            <AdminDashboard />
+
+                        </div>
+                    )
+                }} />
+                <Route path="/addUser" component={AddUser} />
+            </Switch>
+        </Home>
+    )
+})
 
 const Routes = view(function Routes() {
     
@@ -24,10 +44,10 @@ const Routes = view(function Routes() {
                     return  isLoggedIn ? <Redirect to="/home" /> : <Login />
                 }} />
                 <Route path="/home" render={() => {
-                    return isLoggedIn ? <Home /> : <Redirect to="/login" />
+                    return isLoggedIn ? <HomeWithChildRoutes /> : <Redirect to="/login" />
                 }} />
                 <Route path="/" render={() => {
-                    return isLoggedIn ? <Home /> : <Redirect to="/login" />
+                    return isLoggedIn ? <HomeWithChildRoutes /> : <Redirect to="/login" />
                 }} />
             </Switch>
             <Footer />

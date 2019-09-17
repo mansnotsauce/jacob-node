@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import constants from '../../shared/constants'
 import { view } from '../framework'
 import routeStore from '../stores/routeStore'
@@ -16,7 +17,7 @@ export default class Home extends React.Component {
                 <section id="menu-desktop">
                     <div className="mini-container container">
                         <ul className="menu-holder">
-                            <a href="/home">
+                            <Link to="/home">
                                 <li className={routeStore.pathname === '/home' ? 'active' : ''}>
                                     <img src="/assets/images/dashboard.svg" className="svg icon" />
                                     <div className="clear" />
@@ -24,28 +25,28 @@ export default class Home extends React.Component {
                                         (sessionStore.userData && [ constants.CEO_ROLE, constants.VP_ROLE, constants.SALES_SUPPORT_ROLE, constants.ADMIN_ROLE ].includes(sessionStore.userData.role)) ? 'Admin' : 'Dashboard'
                                     }
                                 </li>
-                            </a>
-                            <a href="/leaderboard">
+                            </Link>
+                            <Link to="/leaderboard">
                                 <li className={routeStore.pathname === '/leaderboard' ? 'active' : ''}>
                                     <img src="/assets/images/leader-board.svg" className="svg icon" />
                                     <div className="clear" />
                                     Leader Board
                                 </li>
-                            </a>
-                            <a href="/training">
+                            </Link>
+                            <Link to="/training">
                                 <li className={routeStore.pathname === '/training' ? 'active' : ''}>
                                     <img src="/assets/images/training.svg" className="svg icon" />
                                     <div className="clear" />
                                     Training
                                 </li>
-                            </a>
-                            <a href="/pwrLine">
+                            </Link>
+                            <Link to="/pwrLine">
                                 <li className={routeStore.pathname === '/pwrLine' ? 'active' : ''}>
                                     <img src="/assets/images/pwr-ic-black.svg" className="svg icon" />
                                     <div className="clear" />
                                     Pwr Line
                                 </li>
-                            </a>
+                            </Link>
                             <li
                                 className={'more-desktop' + (this.state.moreMenuExpanded ? ' open' : '')} 
                                 onClick={() => this.setState({ moreMenuExpanded: !this.state.moreMenuExpanded })}
@@ -57,18 +58,23 @@ export default class Home extends React.Component {
                                     <ul className="dropdown-menu-nav">
                                         {
                                             (sessionStore.userData && [ constants.CEO_ROLE, constants.VP_ROLE, constants.SALES_SUPPORT_ROLE, constants.ADMIN_ROLE, constants.MANAGER_ROLE, constants.REGIONAL_ROLE ].includes(sessionStore.userData.role)) ?
-                                                <a href="/onboarding"><li>Onboarding</li></a>
+                                                <Link to="/onboarding"><li>Onboarding</li></Link>
                                             : null
                                         }
-                                        <a href="/pwr-goals"><li>PWR Goals</li></a>
-                                        <a href="/profile/"><li>Profile</li></a>
+                                        <Link to="/pwr-goals"><li>PWR Goals</li></Link>
+                                        <Link to="/profile/"><li>Profile</li></Link>
                                     </ul>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </section>
-                {this.props.children}
+                <div className="content">
+                    <div className="container">
+                        <div className="clear50" />
+                        {this.props.children}
+                    </div>
+                </div>
             </div>
         )
     }
