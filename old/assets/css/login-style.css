@@ -5,7 +5,7 @@ body {
 	background: #f8f8f8;
 }
 .page-background {
-	/* background: url('../images/login-bg.jpg'); */
+	background: url('/assets/images/login-bg.jpg');
 	background-position: center;
 	background-size: cover;
 	background-attachment: fixed;
@@ -69,7 +69,7 @@ body {
 	content: " ";
 	display: block;
 	position: absolute;
-/*	background: url('img/icons/upload-ic20.png') no-repeat center;*/
+	background: url('img/icons/upload-ic20.png') no-repeat center;
 	left: 0px;
 	top: 0px;
 	width: 60px;
@@ -82,7 +82,7 @@ body {
     color: #569cd4;
 }	
 .button.upload:before {
-/*    background: url(img/icons/blue-icon.png) no-repeat center;*/
+    background: url(img/icons/blue-icon.png) no-repeat center;
 
 }
 
@@ -98,7 +98,7 @@ body {
 	content: "";
 	height: 33px;
 	width: 35px;
-/*	background: url(img/icons/right_icon-blue.png) no-repeat center;*/
+	background: url(img/icons/right_icon-blue.png) no-repeat center;
 	display: block;
 	opacity: 0;
 	top: 13px;
@@ -122,7 +122,7 @@ body {
     content: "";
     height: 33px;
     width: 35px;
-/*    background: url(img/icons/right_icon-blue.png) no-repeat center;*/
+    background: url(img/icons/right_icon-blue.png) no-repeat center;
     display: block;
     opacity: 0;
     top: 11px;
@@ -259,7 +259,7 @@ form.login label.remember-me {
 .onboard-accordion > .ui-accordion-header {
 	position: relative;
 	display: block;
-	background: #569cd4;
+	background: #569cd4;// url('img/icons/more-arrow.png') no-repeat right;
 	color: #fff;
 	border-radius: 8px;
 	padding: 10px 16px 10px 46px;
@@ -334,9 +334,9 @@ form.login label.remember-me {
 	background-color: transparent;
 	color: #569cd4;
 }
-/* .onboard-accordion .buttons-photo-id button:hover::before {
+.onboard-accordion .buttons-photo-id button:hover::before {
 	background: url(img/icons/blue-icon.png) no-repeat center;
-} */
+}
 .onboard-accordion .buttons-submit {
 	padding-top: 20px;
 	padding-bottom: 45px;				
