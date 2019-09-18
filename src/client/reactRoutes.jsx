@@ -9,7 +9,7 @@ import Footer from './views/footer'
 import Login from './views/login'
 import Home from './views/home'
 import AdminDashboard from './views/adminDashboard'
-import AddUser from './views/addUser'
+import CreateUser from './views/createUser'
 
 const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
     return (
@@ -23,7 +23,7 @@ const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
                         </div>
                     )
                 }} />
-                <Route path="/addUser" component={AddUser} />
+                <Route path="/createUser" component={CreateUser} />
             </Switch>
         </Home>
     )

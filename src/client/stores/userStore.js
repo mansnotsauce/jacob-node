@@ -24,7 +24,7 @@ export default store({
             phoneNumber,
             teamId,
         }) {
-            const user = await requester.post('/createUser', {
+            const { newUser } = await requester.post('/createUser', {
                 email,
                 role,
                 firstName,
@@ -32,9 +32,7 @@ export default store({
                 phoneNumber,
                 teamId,
             })
-            if (user) {
-                this.users.push(user)
-            }
+            this.users.push(newUser)
         }
     }
 })

@@ -9,7 +9,7 @@
     "start:prod": "npm run deploy && cross-env NODE_ENV=production nodemon --watch index.js --watch src/server --watch build/client index.js",
     "build": "cross-env NODE_ENV=production parcel build index.html --out-dir tmp/client",
     "prep": "mkdir build && mkdir build/client",
-    "deploy": "npm run build && rm -r build/client && mv tmp/client build"
+    "deploy": "npm run build && rm -rf build/client && mv tmp/client build"
   },
   "repository": {
     "type": "git",

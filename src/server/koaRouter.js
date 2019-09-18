@@ -8,12 +8,11 @@ const userService = require('./services/userService')
 
 router.post('/login', async (ctx) => {
     const { email, password } = ctx.request.body
-    const { sessionKey, userId, userData } = await sessionService.login({ email, password })
+    const { sessionKey, user } = await sessionService.login({ email, password })
     ctx.cookies.set(constants.SESSION_KEY_COOKIE_NAME, sessionKey, { overwrite: true })
     ctx.body = {
         isLoggedIn: true,
-        userId,
-        userData,
+        user,
     }
 })
 
@@ -23,8 +22,8 @@ router.post('/logout', async (ctx) => {
 })
 
 router.get('/userStatus', async (ctx) => {
-    const { isLoggedIn, userId, userData } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    ctx.body = { isLoggedIn, userId, userData }
+    const { isLoggedIn, user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    ctx.body = { isLoggedIn, user }
 })
 
 router.get('/assets/:assetType/:resource', async (ctx) => {
@@ -39,12 +38,36 @@ router.get('/hosted/:parentDirectory/:subDirectory/:resource', async (ctx) => {
 })
 
 router.get('/users', async (ctx) => {
-    const { userData } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!permissionsUtils.isAdminRole(userData.role)) {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!permissionsUtils.isAdminRole(user.role)) {
         throw new Error('Unauthorized get users request')
     }
     const users = await userService.getUsers()
     ctx.body = { users }
+})
+
+router.post('/createUser', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!permissionsUtils.isAdminRole(user.role)) {
+        throw new Error('Unauthorized create user request')
+    }
+    const {
+        email,
+        role,
+        firstName,
+        lastName,
+        phoneNumber,
+        teamId,
+    } = ctx.request.body
+    const newUser = await userService.createUser({
+        email,
+        role,
+        firstName,
+        lastName,
+        phoneNumber,
+        teamId,
+    })
+    ctx.body = { newUser }
 })
 
 // router.get('/.well-known/acme-challenge/:resource', async (ctx) => {

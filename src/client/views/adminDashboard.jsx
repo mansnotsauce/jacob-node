@@ -6,7 +6,7 @@ import userStore from '../stores/userStore'
 
 export default view(function AdminDashboard() {
 
-    if (!sessionStore.userData || !permissionsUtils.isAdminRole(sessionStore.userData.role)) {
+    if (!permissionsUtils.isAdminRole(sessionStore.user.role)) {
         return null
     }
 

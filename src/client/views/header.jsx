@@ -15,18 +15,18 @@ export default view(function Header() {
                             {/* <div className="so-prof-img" style="background-image:url(<?php echo $_SESSION['user']['picture']; ?>);" /> */}
                         </a>
                         {
-                            sessionStore.userId !== null ?
-                                <div className="so-prof-img" style={{ backgroundImage: `url(/hosted/users/${sessionStore.userId}/profilePicture.png)` }} />
+                            sessionStore.user.userId !== null ?
+                                <div className="so-prof-img" style={{ backgroundImage: `url(/hosted/users/${sessionStore.user.userId}/profilePicture.png)` }} />
                             : null
                         }
                     </div>
                 : null
             }
             {
-                sessionStore.userData && sessionStore.userData.firstName ?
+                sessionStore.user && sessionStore.user.firstName ?
                     <div className="mini-container container">
                         <h1 className="center">
-                            <span className="colorBlue">{sessionStore.userData.firstName}</span>, Welcome to the PWR Station
+                            <span className="colorBlue">{sessionStore.user.firstName}</span>, Welcome to the PWR Station
                         </h1>
                         <h2>powered by <img src="/assets/images/logo-horizon.png" /></h2>
                     </div>

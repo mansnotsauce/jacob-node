@@ -2,8 +2,7 @@ import { store, emit } from '../framework'
 import requester from '../requester'
 
 const isLoggedInKey = 'isLoggedIn'
-const userIdKey = 'userId'
-const userDataKey = 'userData'
+const userKey = 'user'
 
 function storeItem(key, item) {
     if (item === undefined) item = null
@@ -17,13 +16,12 @@ function getItem(key) {
 export default store({
 
     isLoggedIn  : getItem(isLoggedInKey) || null,
-    userId      : getItem(userIdKey) || null,
-    userData    : getItem(userDataKey) || null,
+    user        : getItem(userKey) || null,
 
     eventListeners: {
         async ClickedLogin({ email, password }) {
-            const { isLoggedIn, userId, userData } = await requester.post('/login', { email, password })
-            emit.ReceivedUserStatus({ isLoggedIn, userId, userData })
+            const { isLoggedIn, user } = await requester.post('/login', { email, password })
+            emit.ReceivedUserStatus({ isLoggedIn, user })
             if (!isLoggedIn) {
                 alert('Login attempt failed')
             }
@@ -33,24 +31,21 @@ export default store({
             await requester.post('/logout')
             emit.ReceivedUserStatus({
                 isLoggedIn  : false,
-                userId      : null,
-                userData    : null,
+                user        : {},
             })
         },
         async Initialized() {
-            const { isLoggedIn, userId, userData } = await requester.get('/userStatus')
-            emit.ReceivedUserStatus({ isLoggedIn, userId, userData })
+            const { isLoggedIn, user } = await requester.get('/userStatus')
+            emit.ReceivedUserStatus({ isLoggedIn, user })
         },
-        async ReceivedUserStatus({ isLoggedIn, userId, userData }) {
+        async ReceivedUserStatus({ isLoggedIn, user }) {
             this.isLoggedIn = isLoggedIn
             storeItem(isLoggedIn, isLoggedIn)
             if (!isLoggedIn) {
                 // TODO: remove cookie
             }
-            this.userId = userId
-            storeItem(userIdKey, userId)
-            this.userData = userData
-            storeItem(userDataKey, userData)
+            this.user = user
+            storeItem(userKey, user)
         },
     }
 })

@@ -1,6 +1,5 @@
 import permissionsUtils from '../../shared/permissionsUtils'
 import Link from '../components/link'
-import constants from '../../shared/constants'
 import { view } from '../framework'
 import routeStore from '../stores/routeStore'
 import sessionStore from '../stores/sessionStore'
@@ -23,7 +22,7 @@ export default class Home extends React.Component {
                                     <img src="/assets/images/dashboard.svg" className="svg icon" />
                                     <div className="clear" />
                                     {
-                                        (sessionStore.userData && permissionsUtils.isAdminRole(sessionStore.userData.role)) ? 'Admin' : 'Dashboard'
+                                        (permissionsUtils.isAdminRole(sessionStore.user.role)) ? 'Admin' : 'Dashboard'
                                     }
                                 </li>
                             </Link>
@@ -59,7 +58,7 @@ export default class Home extends React.Component {
                                     <ul className="dropdown-menu-nav">
                                         {
 
-                                            (sessionStore.userData && permissionsUtils.isOnboarderRole(sessionStore.userData.role)) ?
+                                            (permissionsUtils.isOnboarderRole(sessionStore.user.role)) ?
                                                 <Link to="/onboarding"><li>Onboarding</li></Link>
                                             : null
                                         }

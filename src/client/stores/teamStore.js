@@ -1,4 +1,5 @@
-import { store } from '../framework'
+import { store, emit } from '../framework'
+import requester from '../requester'
 
 export default store({
 
@@ -7,7 +8,7 @@ export default store({
     eventListeners: {
         async ReceivedUserStatus({ isLoggedIn }) {
             if (isLoggedIn) {
-                const teams = await server.get('/teams')
+                const teams = await requester.get('/ree')
                 emit.ReceivedTeams({ teams })
             }
         },
