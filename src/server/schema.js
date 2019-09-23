@@ -14,6 +14,12 @@ const schemaQueries = [
     'alter table user add column role varchar(255)',
     'alter table user add column phoneNumber varchar(255)',
     'alter table user add column teamId varchar(255)',
+    `
+    create table team (
+        teamId int unsigned not null primary key auto_increment,
+        teamName varchar(255)
+    )
+    `
 ]
 
 async function initialize(dbService) {
@@ -22,7 +28,7 @@ async function initialize(dbService) {
             await dbService.query(query, [], { skipInitCheck: true })
         }
         catch (error) {
-            const e = error
+            console.log(error.message)
         }
     }
 }

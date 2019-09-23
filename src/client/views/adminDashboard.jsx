@@ -18,7 +18,7 @@ export default view(function AdminDashboard() {
                     <input type="text" name="pwr_search" placeholder="Search...">
                 </div> */}
                 <div className="col-xs-12 alignRight">
-                    <Link to="/addUser/">
+                    <Link to="/createUser/">
                         <button className="addUserBtn">
                             Create New User
                         </button>

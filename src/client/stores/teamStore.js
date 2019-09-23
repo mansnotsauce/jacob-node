@@ -8,7 +8,7 @@ export default store({
     eventListeners: {
         async ReceivedUserStatus({ isLoggedIn }) {
             if (isLoggedIn) {
-                const teams = await requester.get('/api/ree')
+                const { teams } = await requester.get('/api/teams')
                 emit.ReceivedTeams({ teams })
             }
         },

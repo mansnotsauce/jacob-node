@@ -5,6 +5,7 @@ const constants = require('../shared/constants')
 const permissionsUtils = require('../shared/permissionsUtils')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
+const teamService = require('./services/teamService')
 
 // assets directory structure is a rigid 1 level deep :P
 router.get('/assets/:assetType/:resource', async (ctx) => {
@@ -69,6 +70,15 @@ router.post('/api/createUser', async (ctx) => {
         teamId,
     })
     ctx.body = { newUser }
+})
+
+router.get('/api/teams', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!permissionsUtils.isAdminRole(user.role)) {
+        throw new Error('Unauthorized get users request')
+    }
+    const teams = await teamService.getTeams()
+    ctx.body = { teams }
 })
 
 // router.get('/.well-known/acme-challenge/:resource', async (ctx) => {
