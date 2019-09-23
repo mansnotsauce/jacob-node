@@ -15,8 +15,8 @@ if (!config.isDevMode) {
 
 const openUrls = [ // urls that don't require the user to be logged in
     '/assets',
-    '/login',
-    '/userStatus',
+    '/api/login',
+    '/api/userStatus',
 ]
 
 async function authMiddleware(ctx, next) {

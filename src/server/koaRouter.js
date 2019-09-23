@@ -6,7 +6,19 @@ const permissionsUtils = require('../shared/permissionsUtils')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
 
-router.post('/login', async (ctx) => {
+// assets directory structure is a rigid 1 level deep :P
+router.get('/assets/:assetType/:resource', async (ctx) => {
+    const { assetType, resource } = ctx.params
+    await send(ctx, resource, { root: resolve(__dirname, '../../assets', assetType) })
+})
+
+// hosted directory structure is a rigid 2 levels deep :P
+router.get('/hosted/:parentDirectory/:subDirectory/:resource', async (ctx) => {
+    const { parentDirectory, subDirectory, resource } = ctx.params
+    await send(ctx, resource, { root: resolve(__dirname, '../../hosted', parentDirectory, subDirectory) })
+})
+
+router.post('/api/login', async (ctx) => {
     const { email, password } = ctx.request.body
     const { sessionKey, user } = await sessionService.login({ email, password })
     ctx.cookies.set(constants.SESSION_KEY_COOKIE_NAME, sessionKey, { overwrite: true })
@@ -16,28 +28,17 @@ router.post('/login', async (ctx) => {
     }
 })
 
-router.post('/logout', async (ctx) => {
+router.post('/api/logout', async (ctx) => {
     await sessionService.logout(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     ctx.body = { ok: true }
 })
 
-router.get('/userStatus', async (ctx) => {
+router.get('/api/userStatus', async (ctx) => {
     const { isLoggedIn, user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     ctx.body = { isLoggedIn, user }
 })
 
-router.get('/assets/:assetType/:resource', async (ctx) => {
-    const { assetType, resource } = ctx.params
-    await send(ctx, resource, { root: resolve(__dirname, '../../assets', assetType) })
-})
-
-// hackish, as it requires 2 directory levels :P
-router.get('/hosted/:parentDirectory/:subDirectory/:resource', async (ctx) => {
-    const { parentDirectory, subDirectory, resource } = ctx.params
-    await send(ctx, resource, { root: resolve(__dirname, '../../hosted', parentDirectory, subDirectory) })
-})
-
-router.get('/users', async (ctx) => {
+router.get('/api/users', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!permissionsUtils.isAdminRole(user.role)) {
         throw new Error('Unauthorized get users request')
@@ -46,7 +47,7 @@ router.get('/users', async (ctx) => {
     ctx.body = { users }
 })
 
-router.post('/createUser', async (ctx) => {
+router.post('/api/createUser', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!permissionsUtils.isAdminRole(user.role)) {
         throw new Error('Unauthorized create user request')

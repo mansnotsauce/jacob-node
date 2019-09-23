@@ -9,7 +9,7 @@ export default store({
     eventListeners: {
         async ReceivedUserStatus({ isLoggedIn, userData }) {
             if (isLoggedIn && userData && permissionsUtils.isAdminRole(userData.role)) {
-                const users = await requester.get('/users')
+                const users = await requester.get('/api/users')
                 emit.ReceivedUsers({ users })
             }
         },
@@ -24,7 +24,7 @@ export default store({
             phoneNumber,
             teamId,
         }) {
-            const { newUser } = await requester.post('/createUser', {
+            const { newUser } = await requester.post('/api/createUser', {
                 email,
                 role,
                 firstName,

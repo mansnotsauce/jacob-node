@@ -20,7 +20,7 @@ export default store({
 
     eventListeners: {
         async ClickedLogin({ email, password }) {
-            const { isLoggedIn, user } = await requester.post('/login', { email, password })
+            const { isLoggedIn, user } = await requester.post('/api/login', { email, password })
             emit.ReceivedUserStatus({ isLoggedIn, user })
             if (!isLoggedIn) {
                 alert('Login attempt failed')
@@ -28,14 +28,14 @@ export default store({
 
         },
         async ClickedLogout() {
-            await requester.post('/logout')
+            await requester.post('/api/logout')
             emit.ReceivedUserStatus({
                 isLoggedIn  : false,
                 user        : {},
             })
         },
         async Initialized() {
-            const { isLoggedIn, user } = await requester.get('/userStatus')
+            const { isLoggedIn, user } = await requester.get('/api/userStatus')
             emit.ReceivedUserStatus({ isLoggedIn, user })
         },
         async ReceivedUserStatus({ isLoggedIn, user }) {

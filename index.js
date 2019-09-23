@@ -4,9 +4,7 @@ const http = require('http')
 const https = require('https')
 const config = require('./config')
 const koaServer = require('./src/server/koaServer')
-const koaRouter = require('./src/server/koaRouter')
 
-const routes = koaRouter.stack.map(i => i.path.split(':')[0])
 const koaServerCallback = koaServer.callback()
 
 const createServer = config.isDevMode ? http.createServer : https.createServer
@@ -31,7 +29,11 @@ if (config.isDevMode) {
     const bundlerRequestListener = bundler.middleware()
     
     createServerCallback = (req, res) => {
-        if (routes.some(route => req.url.indexOf(route) === 0)) {
+        if ([
+            '/api/',
+            '/assets/',
+            '/hosted/',
+        ].some(route => req.url.indexOf(route) === 0)) {
             koaServerCallback(req, res)
         }
         else {
