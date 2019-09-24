@@ -29,6 +29,7 @@ const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
     )
 })
 
+// TODO: route is lost on rerender unless it's one of these routes
 const Routes = view(function Routes() {
     
     // leave this -- it causes this component to rerender when route changes
@@ -71,7 +72,12 @@ export default class RoutesWrapper extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
             const { pathname, search, hash } = this.props.location
-            emit.RouteChanged({ pathname, search, hash })
+            emit.RouteChanged({
+                pathname,
+                // search,
+                // hash,
+                previousPathname: prevProps.location.pathname,
+            })
         }
     }
     

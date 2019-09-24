@@ -26,12 +26,11 @@ async function createUser({
     phoneNumber,
     teamId,
 }) {
-    const { insertId } = await dbService.query('INSERT INTO user (firstName, lastName, role, email, phoneNumber, teamId) VALUES (?, ?, ?, ?, ?, ?)', [ email, role, firstName, lastName, phoneNumber, teamId ])
-    const user = await getUser(insertId)
-    return user
+    await dbService.query('INSERT INTO user (firstName, lastName, role, email, phoneNumber, teamId) VALUES (?, ?, ?, ?, ?, ?)', [ firstName, lastName, role, email, phoneNumber, teamId ])
 }
 
 module.exports = {
     getUser,
     getUsers,
+    createUser,
 }

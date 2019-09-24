@@ -5,16 +5,27 @@ import requester from '../requester'
 export default store({
 
     users: [],
+    addUserRedirectInitiated: false,
+    addUserRedirectEngaged: false,
 
     eventListeners: {
-        async ReceivedUserStatus({ isLoggedIn, userData }) {
-            if (isLoggedIn && userData && permissionsUtils.isAdminRole(userData.role)) {
-                const users = await requester.get('/api/users')
+        async ReceivedUserStatus({ isLoggedIn, user }) {
+            if (isLoggedIn && user && permissionsUtils.isAdminRole(user.role)) {
+                const { users } = await requester.get('/api/users')
                 emit.ReceivedUsers({ users })
             }
         },
         ReceivedUsers({ users }) {
             this.users = users
+            if (this.addUserRedirectInitiated) {
+                this.addUserRedirectEngaged = true
+            }
+            this.addUserRedirectInitiated = false
+        },
+        RouteChanged({ pathname }) {
+            if (pathname === '/createUser') {
+                this.addUserRedirectEngaged = false
+            }
         },
         async ClickedAddNewUser({
             email,
@@ -24,7 +35,8 @@ export default store({
             phoneNumber,
             teamId,
         }) {
-            const { newUser } = await requester.post('/api/createUser', {
+            this.addUserRedirectInitiated = true
+            const { users } = await requester.post('/api/createUser', {
                 email,
                 role,
                 firstName,
@@ -32,7 +44,7 @@ export default store({
                 phoneNumber,
                 teamId,
             })
-            this.users.push(newUser)
+            emit.ReceivedUsers({ users })
         }
     }
 })

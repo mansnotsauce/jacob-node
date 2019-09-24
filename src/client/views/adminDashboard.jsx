@@ -2,7 +2,7 @@ import permissionsUtils from '../../shared/permissionsUtils'
 import Link from '../components/link'
 import { view } from '../framework'
 import sessionStore from '../stores/sessionStore'
-import userStore from '../stores/userStore'
+import Users from './users'
 
 export default view(function AdminDashboard() {
 
@@ -25,6 +25,8 @@ export default view(function AdminDashboard() {
                     </Link>
                 </div>
             </div>
+            <div className="clear30" />
+            <Users />
         </section>
     )
 })

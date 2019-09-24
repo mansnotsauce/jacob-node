@@ -1,8 +1,15 @@
+import { Redirect } from 'react-router-dom'
 import { view, emit } from '../framework'
 import constants from '../../shared/constants'
 import teamStore from '../stores/teamStore'
+import userStore from '../stores/userStore'
 
 export default view(function CreateUser() {
+
+    if (userStore.addUserRedirectEngaged) {
+        return <Redirect to="/home" />
+    }
+
     return (
         <section className="pwrstation-table">
             <div className="section-table-name">Add New User</div>
@@ -79,7 +86,7 @@ export default view(function CreateUser() {
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label className="p greyColor"><strong>Team</strong></label>
-                                <select className="form-control" name="team">
+                                <select id="newUserTeamId" className="form-control" name="team">
                                     <option value="">Select Team</option>
                                     {
                                         teamStore.teams.map(team => {

@@ -61,7 +61,7 @@ router.post('/api/createUser', async (ctx) => {
         phoneNumber,
         teamId,
     } = ctx.request.body
-    const newUser = await userService.createUser({
+    await userService.createUser({
         email,
         role,
         firstName,
@@ -69,7 +69,8 @@ router.post('/api/createUser', async (ctx) => {
         phoneNumber,
         teamId,
     })
-    ctx.body = { newUser }
+    const users = await userService.getUsers()
+    ctx.body = { users }
 })
 
 router.get('/api/teams', async (ctx) => {
