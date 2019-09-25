@@ -36,8 +36,8 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
     // since the leafs of the store dependency tree are required/imported first,
     // we assume that stores' dependencies will always be emitted to first.
     // hence it is fine to reference stores in other stores.
-    // (just don't do any dynamic `require`ing.)
-    const stores = []
+    // (just don't do any dynamic store creation)
+    let stores = []
     const emit = {}
 
     let emitCount = 1
@@ -92,10 +92,15 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
         return store
     }
 
+    function retire (store) {
+        stores = stores.filter(s => s !== store)
+    }
+
     return {
         emit,
         store,
         view,
         destorify,
+        retire,
     }
 }
