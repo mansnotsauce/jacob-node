@@ -6,8 +6,8 @@ export default store({
     teams: [],
 
     eventListeners: {
-        async ReceivedUserStatus({ isLoggedIn }) {
-            if (isLoggedIn) {
+        async ReceivedUserStatus({ isLoggedIn, user }) {
+            if (isLoggedIn && user.isAdmin || user.isOnboarder) {
                 const { teams } = await requester.get('/api/teams')
                 emit.ReceivedTeams({ teams })
             }

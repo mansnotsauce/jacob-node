@@ -2,10 +2,10 @@ const { resolve } = require('path')
 const router = require('koa-router')()
 const send = require('koa-send')
 const constants = require('../shared/constants')
-const permissionsUtils = require('../shared/permissionsUtils')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
 const teamService = require('./services/teamService')
+const roleService = require('./services/roleService')
 
 // assets directory structure is a rigid 1 level deep :P
 router.get('/assets/:assetType/:resource', async (ctx) => {
@@ -41,7 +41,7 @@ router.get('/api/userStatus', async (ctx) => {
 
 router.get('/api/users', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!permissionsUtils.isAdminRole(user.role)) {
+    if (!user.isAdmin) {
         throw new Error('Unauthorized get users request')
     }
     const users = await userService.getUsers()
@@ -50,7 +50,7 @@ router.get('/api/users', async (ctx) => {
 
 router.post('/api/createUser', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!permissionsUtils.isAdminRole(user.role)) {
+    if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
     const {
@@ -75,11 +75,16 @@ router.post('/api/createUser', async (ctx) => {
 
 router.get('/api/teams', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!permissionsUtils.isAdminRole(user.role)) {
+    if (!user.isAdmin && !user.isOnboarder) {
         throw new Error('Unauthorized get users request')
     }
     const teams = await teamService.getTeams()
     ctx.body = { teams }
+})
+
+router.get('/api/roles', async (ctx) => {
+    const roles = await roleService.getRoles()
+    ctx.body = { roles }
 })
 
 // router.get('/.well-known/acme-challenge/:resource', async (ctx) => {

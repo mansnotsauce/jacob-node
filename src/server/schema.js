@@ -14,12 +14,21 @@ const schemaQueries = [
     'alter table user add column role varchar(255)',
     'alter table user add column phoneNumber varchar(255)',
     'alter table user add column teamId varchar(255)',
+    'alter table user add column roleId varchar(255)',
+    'alter table user drop column role',
     `
     create table team (
         teamId int unsigned not null primary key auto_increment,
         teamName varchar(255)
     )
-    `
+    `,
+    'alter table user add column profileImageFile varchar(255)',
+    `create table role (
+        roleId int unsigned not null primary key auto_increment,
+        roleName varchar(255),
+        isAdmin tinyint(1) NOT NULL DEFAULT 0,
+        isOnboarder tinyint(1) NOT NULL DEFAULT 0
+    )`
 ]
 
 async function initialize(dbService) {

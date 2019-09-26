@@ -7,4 +7,5 @@ export default [
     'ClickedAddNewUser',
     'ReceivedUsers',
     'ReceivedTeams',
+    'ReceivedRoles',
 ]

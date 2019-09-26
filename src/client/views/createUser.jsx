@@ -1,8 +1,8 @@
 import { Redirect } from 'react-router-dom'
 import { view, emit } from '../framework'
-import constants from '../../shared/constants'
 import teamStore from '../stores/teamStore'
 import userStore from '../stores/userStore'
+import roleStore from '../stores/roleStore'
 
 export default view(function CreateUser() {
 
@@ -20,7 +20,7 @@ export default view(function CreateUser() {
                     e.preventDefault()
                     emit.ClickedAddNewUser({
                         email       : document.getElementById('newUserEmail').value,
-                        role        : document.getElementById('newUserRole').value,
+                        roleId      : document.getElementById('newUserRole').value,
                         firstName   : document.getElementById('newUserFirstName').value,
                         lastName    : document.getElementById('newUserLastName').value,
                         phoneNumber : document.getElementById('newUserPhoneNumber').value,
@@ -47,15 +47,13 @@ export default view(function CreateUser() {
                                 <label className="p greyColor"><strong>Role<span className="text-danger">*</span></strong></label>
                                 <select id="newUserRole" className="form-control" name="position" required>
                                     <option value="">Select User Role</option>
-                                    <option value={constants.FIELD_MARKETER_ROLE}>Field Marketer</option>
-                                    <option value={constants.FIELD_MARKETER_ELITE_ROLE}>Field Marketer Elite</option>
-                                    <option value={constants.JUNIOR_ENERGY_CONSULTANT_ROLE}>Junior Energy Consultant</option>
-                                    <option value={constants.SENIOR_ENERGY_CONSULTANT_ROLE}>Senior Energy Consultant</option>
-                                    <option value={constants.SALES_SUPPORT_ROLE}>Sales Support</option>
-                                    <option value={constants.MANAGER_ROLE}>Manager</option>
-                                    <option value={constants.REGIONAL_MANAGER_ROLE}>Regional Manager</option>
-                                    <option value={constants.VP_ROLE}>VP of Sales</option>
-                                    <option value={constants.CEO_ROLE}>CEO</option>
+                                    {
+                                        roleStore.roles.map(role => {
+                                            return (
+                                                <option value={role.roleId}>{role.roleName}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                         </div>

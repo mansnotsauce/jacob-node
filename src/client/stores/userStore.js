@@ -1,4 +1,3 @@
-import permissionsUtils from '../../shared/permissionsUtils'
 import { store, emit } from '../framework'
 import requester from '../requester'
 
@@ -8,11 +7,15 @@ export default store({
     addUserRedirectInitiated: false,
     addUserRedirectEngaged: false,
 
+    async _reloadUsers() {
+        const { users } = await requester.get('/api/users')
+        emit.ReceivedUsers({ users })
+    },
+
     eventListeners: {
-        async ReceivedUserStatus({ isLoggedIn, user }) {
-            if (isLoggedIn && user && permissionsUtils.isAdminRole(user.role)) {
-                const { users } = await requester.get('/api/users')
-                emit.ReceivedUsers({ users })
+        ReceivedUserStatus({ isLoggedIn, user }) {
+            if (isLoggedIn && user.isAdmin) {
+                this._reloadUsers()
             }
         },
         ReceivedUsers({ users }) {
@@ -25,6 +28,7 @@ export default store({
         RouteChanged({ pathname }) {
             if (pathname === '/createUser') {
                 this.addUserRedirectEngaged = false
+                this._reloadUsers()
             }
         },
         async ClickedAddNewUser({

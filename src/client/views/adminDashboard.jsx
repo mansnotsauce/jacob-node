@@ -1,4 +1,3 @@
-import permissionsUtils from '../../shared/permissionsUtils'
 import Link from '../components/link'
 import { view } from '../framework'
 import sessionStore from '../stores/sessionStore'
@@ -6,7 +5,7 @@ import Users from './users'
 
 export default view(function AdminDashboard() {
 
-    if (!permissionsUtils.isAdminRole(sessionStore.user.role)) {
+    if (!sessionStore.user.isAdmin) {
         return null
     }
 

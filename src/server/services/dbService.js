@@ -7,6 +7,19 @@ const connection = mysql.createConnection({
     user    : config.dbUser,
     password: config.dbPassword,
     database: config.dbName,
+    typeCast: function castField(field, useDefaultTypeCasting) {
+
+        /*
+        We cast tinyint(1)s to booleans.
+        (So no == 1 nonsense in our JS!!1)
+        */
+        if (field.type === 'TINY' && field.length === 1) {
+            const buffer = field.buffer() // can be null
+            return !!buffer && buffer.toString() == 1
+        }
+
+        return useDefaultTypeCasting()
+    }
 })
 
 connection.connect()

@@ -17,6 +17,7 @@ const openUrls = [ // urls that don't require the user to be logged in
     '/assets',
     '/api/login',
     '/api/userStatus',
+    '/api/roles',
 ]
 
 async function authMiddleware(ctx, next) {
