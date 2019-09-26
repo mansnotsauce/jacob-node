@@ -1,16 +1,23 @@
-import { view } from '../framework'
+import { view, emit } from '../framework'
 import userStore from '../stores/userStore'
 import teamStore from '../stores/teamStore'
 
 const UserTableBody = view(() => {
 
-    const { users } = userStore
-    console.log({ users })
+    const { users, sortBy, reverseSort } = userStore
+
+    let sortedUsers = users.slice()
+    if (sortBy) {
+        sortedUsers = sortedUsers.sort((u1, u2) => sortBy ? (u1[sortBy] > u2[sortBy] ? 1 : -1) : 0)
+        if (reverseSort) {
+            sortedUsers = sortedUsers.reverse()
+        }
+    }
 
     return (
         <tbody>
             {
-                users.map((user, idx) => {
+                sortedUsers.map((user, idx) => {
 
                     const team = teamStore.teams.find(team => team.teamId === user.teamId)
                     const teamName = team ? team.teamName : '--'
@@ -64,23 +71,36 @@ const UserTableBody = view(() => {
 
 const UserTableHead = view(() => {
 
+
     const options = [
         { sortBy: 'lastName', label: 'Name' },
         { sortBy: 'email', label: 'Email' },
         { sortBy: 'teamName', label: 'Team' },
-        { sortBy: 'role', label: 'Role' },
-        { sortBy: 'status', label: 'Status' }, // as of right now this means nothing
+        { sortBy: 'roleName', label: 'Role' },
     ]
 
     return (
         <thead>
             <tr>
-                <th><div className="checkbox"><span param="all"></span></div></th>
-                <th className="greyColor" param="ASC">Name</th>                                
-                <th className="greyColor" param="ASC">Email</th>
-                <th className="greyColor" param="ASC">Team</th>
-                <th className="greyColor" param="ASC">Role</th>
-                <th className="greyColor">Status</th>
+                <th><div className="checkbox"><span param="all"></span></div></th>{/*TODO*/}
+                {
+                    options.map(({ sortBy, label }) => {
+                        let className = 'greyColor'
+                        if (userStore.sortBy === sortBy) {
+                            className += ' active'
+                        }
+                        return (
+                            <th
+                                key={sortBy}
+                                className={className}
+                                onClick={() => emit.SelectedUserSortBy({ sortBy })}
+                            >
+                                {label}
+                            </th>
+                        )
+                    })
+                }
+                <th className="greyColor">Status</th>{/*TODO*/}
             </tr>
         </thead>
     )

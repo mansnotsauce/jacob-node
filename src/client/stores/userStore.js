@@ -6,6 +6,8 @@ export default store({
     users: [],
     addUserRedirectInitiated: false,
     addUserRedirectEngaged: false,
+    sortBy: null,
+    reverseSort: false,
 
     async _reloadUsers() {
         const { users } = await requester.get('/api/users')
@@ -49,6 +51,15 @@ export default store({
                 teamId,
             })
             emit.ReceivedUsers({ users })
-        }
+        },
+        SelectedUserSortBy({ sortBy }) {
+            if (sortBy === this.sortBy) {
+                this.reverseSort = !this.reverseSort
+            }
+            else {
+                this.reverseSort = false
+            }
+            this.sortBy = sortBy
+        },
     }
 })

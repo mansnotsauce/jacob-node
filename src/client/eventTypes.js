@@ -8,4 +8,5 @@ export default [
     'ReceivedUsers',
     'ReceivedTeams',
     'ReceivedRoles',
+    'SelectedUserSortBy',
 ]
