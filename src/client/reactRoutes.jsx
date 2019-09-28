@@ -10,6 +10,7 @@ import Login from './views/login'
 import Home from './views/home'
 import AdminDashboard from './views/adminDashboard'
 import CreateUser from './views/createUser'
+import EditUser from './views/editUser'
 
 const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
     return (
@@ -24,6 +25,7 @@ const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
                     )
                 }} />
                 <Route path="/createUser" component={CreateUser} />
+                <Route path="/editUser/:userId" component={EditUser} />
             </Switch>
         </Home>
     )
@@ -36,6 +38,10 @@ const Routes = view(function Routes() {
     const { pathname } = routeStore
     
     const { isLoggedIn } = sessionStore
+
+    if (isLoggedIn === null) {
+        return <div>Loading...</div>
+    }
     
     return (
         <div>

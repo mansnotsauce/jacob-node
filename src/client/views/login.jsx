@@ -1,4 +1,3 @@
-import Link from '../components/link'
 import { emit } from '../framework'
 
 export default function Login() {

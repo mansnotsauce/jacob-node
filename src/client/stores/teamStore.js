@@ -1,18 +1,12 @@
-import { store, emit } from '../framework'
-import requester from '../requester'
+import { store } from '../framework'
 
 export default store({
 
     teams: [],
 
     eventListeners: {
-        async ReceivedUserStatus({ isLoggedIn, user }) {
-            if (isLoggedIn && user.isAdmin || user.isOnboarder) {
-                const { teams } = await requester.get('/api/teams')
-                emit.ReceivedTeams({ teams })
-            }
-        },
-        ReceivedTeams({ teams }) {
+        LoginConfirmed({ entities }) {
+            const { teams } = entities
             this.teams = teams
         }
     }

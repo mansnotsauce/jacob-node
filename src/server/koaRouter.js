@@ -19,34 +19,57 @@ router.get('/hosted/:parentDirectory/:subDirectory/:resource', async (ctx) => {
     await send(ctx, resource, { root: resolve(__dirname, '../../hosted', parentDirectory, subDirectory) })
 })
 
+async function getEagerlyLoadedEntities(user) {
+    const [
+        users,
+        teams,
+        roles,
+    ] = await Promise.all([
+        user.isAdmin ? userService.getUsers() : [],
+        user.isAdmin || user.isOnboarder ? teamService.getTeams() : [],
+        roleService.getRoles()
+    ])
+    return {
+        user,
+        users,
+        teams,
+        roles,
+    }
+}
+
 router.post('/api/login', async (ctx) => {
     const { email, password } = ctx.request.body
     const { sessionKey, user } = await sessionService.login({ email, password })
+    const entities = await getEagerlyLoadedEntities(user)
     ctx.cookies.set(constants.SESSION_KEY_COOKIE_NAME, sessionKey, { overwrite: true })
     ctx.body = {
         isLoggedIn: true,
-        user,
+        entities,
+    }
+})
+
+router.get('/api/userStatus', async (ctx) => {
+    const { isLoggedIn, user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const entities = isLoggedIn ? await getEagerlyLoadedEntities(user) : {}
+    ctx.body = {
+        isLoggedIn,
+        entities,
     }
 })
 
 router.post('/api/logout', async (ctx) => {
     await sessionService.logout(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     ctx.body = { ok: true }
-})
+})    
 
-router.get('/api/userStatus', async (ctx) => {
-    const { isLoggedIn, user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    ctx.body = { isLoggedIn, user }
-})
-
-router.get('/api/users', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!user.isAdmin) {
-        throw new Error('Unauthorized get users request')
-    }
-    const users = await userService.getUsers()
-    ctx.body = { users }
-})
+// router.get('/api/users', async (ctx) => {
+//     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+//     if (!user.isAdmin) {
+//         throw new Error('Unauthorized get users request')
+//     }
+//     const users = await userService.getUsers()
+//     ctx.body = { users }
+// })
 
 router.post('/api/createUser', async (ctx) => {
     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
@@ -55,7 +78,7 @@ router.post('/api/createUser', async (ctx) => {
     }
     const {
         email,
-        role,
+        roleId,
         firstName,
         lastName,
         phoneNumber,
@@ -63,7 +86,7 @@ router.post('/api/createUser', async (ctx) => {
     } = ctx.request.body
     await userService.createUser({
         email,
-        role,
+        roleId,
         firstName,
         lastName,
         phoneNumber,
@@ -73,19 +96,19 @@ router.post('/api/createUser', async (ctx) => {
     ctx.body = { users }
 })
 
-router.get('/api/teams', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    if (!user.isAdmin && !user.isOnboarder) {
-        throw new Error('Unauthorized get users request')
-    }
-    const teams = await teamService.getTeams()
-    ctx.body = { teams }
-})
+// router.get('/api/teams', async (ctx) => {
+//     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+//     if (!user.isAdmin && !user.isOnboarder) {
+//         throw new Error('Unauthorized get users request')
+//     }
+//     const teams = await teamService.getTeams()
+//     ctx.body = { teams }
+// })
 
-router.get('/api/roles', async (ctx) => {
-    const roles = await roleService.getRoles()
-    ctx.body = { roles }
-})
+// router.get('/api/roles', async (ctx) => {
+//     const roles = await roleService.getRoles()
+//     ctx.body = { roles }
+// })
 
 // router.get('/.well-known/acme-challenge/:resource', async (ctx) => {
 //     const { resource } = ctx.params

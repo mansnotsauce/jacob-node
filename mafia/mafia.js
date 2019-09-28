@@ -7,7 +7,7 @@ configure({
 
 const view = observer
 
-function destorify(value) {
+function toJsIfObservable(value) {
     try {
         if (isObservable(value)) {
             return toJS(value)
@@ -100,7 +100,7 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
         emit,
         store,
         view,
-        destorify,
+        toJS: toJsIfObservable,
         deafen,
     }
 }

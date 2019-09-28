@@ -1,51 +1,41 @@
 import { store, emit } from '../framework'
 import requester from '../requester'
 
-const isLoggedInKey = 'isLoggedIn'
-const userKey = 'user'
-
-function storeItem(key, item) {
-    if (item === undefined) item = null
-    window.localStorage.setItem(key, JSON.stringify(item))
-}
-function getItem(key) {
-    const item = window.localStorage.getItem(key)
-    return item ? JSON.parse(item) : null
-}
-
 export default store({
 
-    isLoggedIn  : getItem(isLoggedInKey) || null,
-    user        : getItem(userKey) || null,
+    isLoggedIn  : null,
+    user        : null,
 
     eventListeners: {
         async ClickedLogin({ email, password }) {
-            const { isLoggedIn, user } = await requester.post('/api/login', { email, password })
-            emit.ReceivedUserStatus({ isLoggedIn, user })
-            if (!isLoggedIn) {
-                alert('Login attempt failed')
+            const { isLoggedIn, entities } = await requester.post('/api/login', { email, password })
+            if (isLoggedIn) {
+                emit.LoginConfirmed({ entities })
             }
-
+            else {
+                emit.LoginDenied()
+            }
+        },
+        LoginDenied() {
+            this.isLoggedIn = false
+        },
+        LoginConfirmed({ entities }) {
+            this.isLoggedIn = true
+            const { user } = entities
+            this.user = user
         },
         async ClickedLogout() {
             await requester.post('/api/logout')
-            emit.ReceivedUserStatus({
-                isLoggedIn  : false,
-                user        : {},
-            })
+            window.location.reload(true) // remove cookies
         },
         async Initialized() {
-            const { isLoggedIn, user } = await requester.get('/api/userStatus')
-            emit.ReceivedUserStatus({ isLoggedIn, user })
-        },
-        async ReceivedUserStatus({ isLoggedIn, user }) {
-            this.isLoggedIn = isLoggedIn
-            storeItem(isLoggedIn, isLoggedIn)
-            if (!isLoggedIn) {
-                // TODO: remove cookie
+            const { isLoggedIn, entities } = await requester.get('/api/userStatus')
+            if (isLoggedIn) {
+                emit.LoginConfirmed({ entities })
             }
-            this.user = user
-            storeItem(userKey, user)
+            else {
+                emit.LoginDenied()
+            }
         },
     }
 })

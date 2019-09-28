@@ -1,14 +1,10 @@
-import { store, emit } from '../framework'
-import requester from '../requester'
+import { store } from '../framework'
 
 export default store({
     roles: [],
     eventListeners: {
-        async Initialized() {
-            const { roles } = await requester.get('/api/roles')
-            emit.ReceivedRoles({ roles })
-        },
-        ReceivedRoles({ roles }) {
+        LoginConfirmed({ entities }) {
+            const { roles } = entities
             this.roles = roles
         }
     }

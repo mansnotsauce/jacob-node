@@ -15,10 +15,9 @@ export default store({
     },
 
     eventListeners: {
-        ReceivedUserStatus({ isLoggedIn, user }) {
-            if (isLoggedIn && user.isAdmin) {
-                this._reloadUsers()
-            }
+        LoginConfirmed({ entities }) {
+            const { users } = entities
+            this.users = users
         },
         ReceivedUsers({ users }) {
             this.users = users
@@ -30,12 +29,12 @@ export default store({
         RouteChanged({ pathname }) {
             if (pathname === '/createUser') {
                 this.addUserRedirectEngaged = false
-                this._reloadUsers()
+                // this._reloadUsers()
             }
         },
         async ClickedAddNewUser({
             email,
-            role,
+            roleId,
             firstName,
             lastName,
             phoneNumber,
@@ -44,7 +43,7 @@ export default store({
             this.addUserRedirectInitiated = true
             const { users } = await requester.post('/api/createUser', {
                 email,
-                role,
+                roleId,
                 firstName,
                 lastName,
                 phoneNumber,

@@ -62,14 +62,14 @@ async function getUsers() {
 
 async function createUser({
     email,
-    role,
+    roleId,
     firstName,
     lastName,
     phoneNumber,
     teamId,
     profileImageFile = null,
 }) {
-    await dbService.query('INSERT INTO user (firstName, lastName, role, email, phoneNumber, teamId, profileImageFile) VALUES (?, ?, ?, ?, ?, ?)', [ firstName, lastName, role, email, phoneNumber, teamId, profileImageFile ])
+    await dbService.query('INSERT INTO user (firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile) VALUES (?, ?, ?, ?, ?, ?, ?)', [ firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile ])
 }
 
 module.exports = {

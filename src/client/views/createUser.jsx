@@ -50,7 +50,7 @@ export default view(function CreateUser() {
                                     {
                                         roleStore.roles.map(role => {
                                             return (
-                                                <option value={role.roleId}>{role.roleName}</option>
+                                                <option key={role.roleId} value={role.roleId}>{role.roleName}</option>
                                             )
                                         })
                                     }

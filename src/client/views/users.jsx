@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { view, emit } from '../framework'
 import userStore from '../stores/userStore'
 import teamStore from '../stores/teamStore'
@@ -44,7 +45,7 @@ const UserTableBody = view(() => {
                                     </span>
                                     <br />
                                     <span className="action">
-                                        <a href={`/profile/${user.userId}/edit`}>Edit</a> | <a href={`/profile/${user.userId}`}>View</a>
+                                        <Link to={`/editUser/${user.userId}`}>Edit</Link> | <Link to={`/user/${user.userId}`}>View</Link>
                                     </span>
                                 </div>                              
                             </td>                                                                
