@@ -60,5 +60,23 @@ export default store({
             }
             this.sortBy = sortBy
         },
+        async SubmittedUserEdit({
+            userId,
+            roleId,
+            teamId,
+            firstName,
+            lastName,
+            phoneNumber,
+        }) {
+            const { users } = await requester.post('/api/editUser', {
+                userId,
+                roleId,
+                teamId,
+                firstName,
+                lastName,
+                phoneNumber,
+            })
+            emit.ReceivedUsers({ users })
+        }
     }
 })

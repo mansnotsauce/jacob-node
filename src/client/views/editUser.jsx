@@ -1,5 +1,8 @@
-import { view } from '../framework'
+import { Link } from 'react-router-dom'
+import { view, emit } from '../framework'
 import userStore from '../stores/userStore'
+import roleStore from '../stores/roleStore'
+import teamStore from '../stores/teamStore'
 
 export default view(function EditUser({ match }) {
 
@@ -8,68 +11,115 @@ export default view(function EditUser({ match }) {
 
     return (
         <section className="pwrstation-view-profile">
+            {
+                teamStore.addTeamModalVisible ?
+                    <div id="modal-addteam" className="modal-box" style={{ display: 'inherit' }}>
+                        <form id="addteamform" action="" method="POST" onSubmit={e => {
+                            e.preventDefault()
+                            emit.ClickedConfirmCreateTeam({
+                                newTeamName: document.getElementById('newTeamName').value,
+                            })
+                        }}>
+                            <p className="result-message"></p>
+                            <div className="closebtn">
+                                <img src="/assets/images/closebtn.png" />
+                            </div>
+                            Team Name:
+                            <input id="newTeamName" type="text" name="name" className="form-control" placeholder="Team Name Here" required />
+                            <button type="submit" className="addTeamBtnConfirm">Create Team</button>
+                        </form>
+                    </div>
+                : null
+            }
             <div className="section-table-name">Profile</div>
-            <div className="clear50" />
             <div className="shadowbox">
                 <div id="resultbox" />
                     <div className="row">
                         <div className="col-xs-6">
-                            <form id="edit-profile-form" action="" method="POST">
-                                <input type="hidden" name="id" value="<?php echo $data['account']['user_id']; ?>" required />
+                            <form id="edit-profile-form" action="" method="POST" onSubmit={e => {
+                                e.preventDefault()
+                                emit.SubmittedUserEdit({
+                                    userId,
+                                    roleId: document.getElementById('roleSelect').value,
+                                    teamId: document.getElementById('teamSelect').value,
+                                    firstName: document.getElementById('firstNameInput').value,
+                                    lastName: document.getElementById('lastNameInput').value,
+                                    phoneNumber: document.getElementById('phoneNumberInput').value,
+                                })
+                            }}>
+                                <input type="hidden" name="id" value={user.email} required />
                                 <div className="h5 greyColor">
                                     <b>Email</b>
                                     <br />{user.email}
                                 </div>
                                 <div className="clear20" />
-                                {/* <?php if($_SESSION['role']=="Field Marketer" || $_SESSION['role']=="Field Marketer Elite" || $_SESSION['role']=="Jr Energy Consultant" || $_SESSION['role']=="Sr Energy Consultant"): ?> */}
-                                    <div className="h5 greyColor">
-                                        <b>Position</b><br />{/*<?php echo $_SESSION['role']; ?>*/}</div>
-                                    <div className="clear20" />
-                                    <div className="h5 greyColor"><b>Team</b><br />{/*<?php echo $_SESSION['user']['team']; ?>*/}</div>
-                                    <div className="clear20" />
-                                {/* <?php else: ?> */}
                                 <div className="h5 greyColor">
                                     <b>Position</b>
                                     <br />
-                                    <select className="form-control" name="position" required>
-                                        <option value=""><em>Select User Role</em></option>
-                                        {/* TOOD: ROLES */}
+                                    <select className="form-control" name="position" id="roleSelect" defaultValue={user.roleId} required>
+                                        <option value="">Select User Role</option>
+                                        {
+                                            roleStore.roles.map(role => {
+                                                return (
+                                                    <option key={role.roleId} value={role.roleId}>{role.roleName}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="h5 greyColor">
                                     <b>Team</b>
-                                    <button type="button" className="addnewteambtn btn btn-primary">Create New Team</button>
+                                    <button type="button" className="addnewteambtn btn btn-primary" onClick={() => emit.ClickedCreateNewTeam()}>Create New Team</button>
                                     <br />
-                                    <select className="form-control" name="team">
-                                        <option value=""><em>Select Team</em></option>
+                                    <select className="form-control" name="team" id="teamSelect" defaultValue={user.teamId}>
+                                        <option value="">Select Team</option>
+                                        {
+                                            teamStore.teams.map(team => {
+                                                return (
+                                                    <option key={team.teamId} value={team.teamId}>
+                                                        {team.teamName}
+                                                    </option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="clear20" />
-                            {/* <?php endif; ?>*/}
                                 <div className="h5 greyColor">
-                                    <b>Full Name</b>
+                                    <b>First Name</b>
                                     <br />
-                                    <input type="text" name="name" value="<?php echo $data['account']['Name']; ?>" required className="form-control" />
+                                    <input type="text" name="firstName" defaultValue={user.firstName} required className="form-control" id="firstNameInput" />
+                                </div>
+                                <div className="h5 greyColor">
+                                    <b>Last Name</b>
+                                    <br />
+                                    <input type="text" name="lastName" defaultValue={user.lastName} required className="form-control" id="lastNameInput" />
                                 </div>
                                 <div className="clear20" />
                                 <div className="h5 greyColor">
                                     <b>Phone Number</b>
                                     <br />
-                                    <input type="text" name="phone" value="<?php echo $data['account']['Phone']; ?>" className="form-control" />
+                                    <input type="text" name="phone" id="phoneNumberInput" className="form-control" defaultValue={user.phoneNumber} />
                                 </div>
                                 <div className="clear50" />
                                 <div className="clear30" />
                                 <button className="approveBtn" type="submit">Update</button>
-                                <a href="/profile/<?php echo $data['account']['user_id']; ?>"><button className="editBtn" type="button">Cancel</button></a>
+                                <Link to={`/user/${user.userId}`}>
+                                    <button className="editBtn" type="button">Cancel</button>
+                                </Link>
                             </form>
                         </div>
                         <div className="col-xs-6 pull-right profile-password-section">
-                            <img src="<?php echo $data['prof_pic']; ?>" className="profile-img" id="prev-img" />
+                            <img src={user.profileImageFile ?
+                                                `/hosted/users/${user.userId}/${user.profileImageFile}`
+                                                : '/assets/images/questionMark.png'} className="profile-img" id="prev-img" />
                             <div className="clear10" />
-                            <form id="uploadpic" action="" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="id" value="<?php echo $data['account']['user_id']; ?>" />
+                            <form id="uploadpic" action="" method="post" encType="multipart/form-data" onSubmit={e => {
+                                e.preventDefault()
+                                console.log(e)
+                            }}>
                                 Select image to upload:
-                                <input type="file" name="fileToUpload" onChange="readURL(this);" id="fileToUpload" required />
+                                <input type="file" name="fileToUpload" onChange={console.log} id="fileToUpload" required />
                                 <input type="submit" value="Upload Image" name="submit" />
                             </form>
                             <div className="clear50" />
@@ -86,11 +136,11 @@ export default view(function EditUser({ match }) {
                                     <p className="error text-danger" />
                                     <div className="form-group">
                                         <label>New Password <span>(Minimum of 6 characters)</span></label>
-                                        <input type="password" name="pass1" className="form-control" minlength="6" required />
+                                        <input type="password" name="pass1" className="form-control" minLength="6" required />
                                     </div>
                                     <div className="form-group">
                                         <label>Confirm Password</label>
-                                        <input type="password" name="pass2" className="form-control" minlength="6" required />
+                                        <input type="password" name="pass2" className="form-control" minLength="6" required />
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" name="updatepass">Update Password</button>

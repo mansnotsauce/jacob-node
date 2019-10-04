@@ -96,6 +96,42 @@ router.post('/api/createUser', async (ctx) => {
     ctx.body = { users }
 })
 
+router.post('/api/editUser', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!user.isAdmin) {
+        throw new Error('Unauthorized create user request')
+    }
+    const {
+        userId,
+        roleId,
+        teamId,
+        firstName,
+        lastName,
+        phoneNumber,
+    } = ctx.request.body
+    await userService.editUser({
+        userId,
+        roleId,
+        teamId,
+        firstName,
+        lastName,
+        phoneNumber,
+    })
+    const users = await userService.getUsers()
+    ctx.body = { users }
+})
+
+router.post('/api/createTeam', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!user.isAdmin) {
+        throw new Error('Unauthorized create user request')
+    }
+    const { newTeamName } = ctx.request.body
+    await teamService.createTeam({ newTeamName })
+    const teams = await teamService.getTeams()
+    ctx.body = { teams }
+})
+
 // router.get('/api/teams', async (ctx) => {
 //     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
 //     if (!user.isAdmin && !user.isOnboarder) {

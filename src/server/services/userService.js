@@ -72,8 +72,20 @@ async function createUser({
     await dbService.query('INSERT INTO user (firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile) VALUES (?, ?, ?, ?, ?, ?, ?)', [ firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile ])
 }
 
+async function editUser({
+    userId,
+    roleId,
+    teamId,
+    firstName,
+    lastName,
+    phoneNumber,
+}) {
+    await dbService.query('UPDATE user SET roleId = ?, teamId = ?, firstName = ?, lastName = ?, phoneNumber = ? WHERE userId = ?', [ roleId, teamId, firstName, lastName, phoneNumber, userId ])
+}
+
 module.exports = {
     getUser,
     getUsers,
     createUser,
+    editUser
 }

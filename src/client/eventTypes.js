@@ -10,4 +10,8 @@ export default [
     'ReceivedTeams',
     'ReceivedRoles',
     'SelectedUserSortBy',
+    'SubmittedUserEdit',
+    'ClickedCreateNewTeam',
+    'ClickedConfirmCreateTeam',
+    'ReceivedTeams',
 ]
