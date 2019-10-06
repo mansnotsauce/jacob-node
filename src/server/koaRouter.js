@@ -1,6 +1,7 @@
 const { resolve } = require('path')
 const router = require('koa-router')()
 const send = require('koa-send')
+const asyncBusboy = require('async-busboy')
 const constants = require('../shared/constants')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
@@ -14,6 +15,7 @@ router.get('/assets/:assetType/:resource', async (ctx) => {
 })
 
 // hosted directory structure is a rigid 2 levels deep :P
+// TODO: get rid of this (and above) restriction by doing some more legit programmatic url parsing
 router.get('/hosted/:parentDirectory/:subDirectory/:resource', async (ctx) => {
     const { parentDirectory, subDirectory, resource } = ctx.params
     await send(ctx, resource, { root: resolve(__dirname, '../../hosted', parentDirectory, subDirectory) })
@@ -130,6 +132,29 @@ router.post('/api/createTeam', async (ctx) => {
     await teamService.createTeam({ newTeamName })
     const teams = await teamService.getTeams()
     ctx.body = { teams }
+})
+
+router.post('/api/uploadProfileImage/:userId', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!user.isAdmin) {
+        throw new Error('Unauthorized create user request')
+    }
+    const { userId } = ctx.params // NOT session user userId
+    const { files, fields } = await asyncBusboy(ctx.req)
+    const fileStream = files[0]
+    const { filename } = fileStream
+    console.log({ filename })
+    const fileBuffer = await new Promise((resolve, reject) => {
+        let buffers = []
+        fileStream.on('data', data => buffers.push(data))
+        fileStream.on('end', () => {
+            resolve(Buffer.concat(buffers))
+        })
+    })
+    await userService.setProfileImage({ userId, filename, fileBuffer })
+    console.log("done it")
+    const users = await userService.getUsers()
+    ctx.body = { users }
 })
 
 // router.get('/api/teams', async (ctx) => {

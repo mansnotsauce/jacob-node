@@ -3,6 +3,7 @@ import { view, emit } from '../framework'
 import userStore from '../stores/userStore'
 import roleStore from '../stores/roleStore'
 import teamStore from '../stores/teamStore'
+import FileUpload from '../components/fileUpload'
 
 export default view(function EditUser({ match }) {
 
@@ -114,14 +115,18 @@ export default view(function EditUser({ match }) {
                                                 `/hosted/users/${user.userId}/${user.profileImageFile}`
                                                 : '/assets/images/questionMark.png'} className="profile-img" id="prev-img" />
                             <div className="clear10" />
-                            <form id="uploadpic" action="" method="post" encType="multipart/form-data" onSubmit={e => {
-                                e.preventDefault()
-                                console.log(e)
-                            }}>
-                                Select image to upload:
-                                <input type="file" name="fileToUpload" onChange={console.log} id="fileToUpload" required />
-                                <input type="submit" value="Upload Image" name="submit" />
-                            </form>
+                            Select image to upload:
+                            <FileUpload
+                                onFiles={files => {
+                                    if (files.length > 1) {
+                                        alert('please only upload 1 file')
+                                        return
+                                    }
+                                    emit.UploadedImageFile({ userId: user.userId, file: files[0] })
+                                }}
+                                inactiveText="Upload Image"
+                                activeText="Drop image here..."
+                            />
                             <div className="clear50" />
                             <div className="h5 greyColor">
                                 <b id="passload">Password</b>

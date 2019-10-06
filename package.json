@@ -21,11 +21,13 @@
     "@babel/plugin-proposal-decorators": "^7.1.6",
     "@babel/preset-env": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0",
+    "async-busboy": "^0.7.0",
     "axios": "^0.18.0",
     "babel-plugin-react-require": "^3.0.1",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "babel-polyfill": "^6.26.0",
     "cross-env": "^5.2.0",
+    "fs-jetpack": "^2.2.2",
     "ip": "^1.1.5",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.1",
@@ -42,6 +44,7 @@
     "prop-types": "^15.7.0",
     "react": "^16.9.0",
     "react-dom": "^16.6.3",
+    "react-dropzone": "^10.1.9",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1"
   }

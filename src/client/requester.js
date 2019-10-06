@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-async function doRequest({ method, url, data }) {
+async function doRequest({ method, url, data, headers }) {
     const params = { method, url }
     if (data) params.data = data
+    if (headers) params.headers = headers
     try {
         const result = await axios(params)
         if (result.data.error) {
@@ -19,18 +20,20 @@ async function doRequest({ method, url, data }) {
 }
 
 export default {
-    async post(url, data) {
+    async post(url, data, { headers } = { headers: null }) {
         const responseData = await doRequest({
             method: 'post',
             url,
             data,
+            headers,
         })
         return responseData
     },
-    async get(url) {
+    async get(url, { headers } = { headers: null }) {
         const responseData = await doRequest({
             method: 'get',
             url,
+            headers,
         })
         return responseData
     },

@@ -1,3 +1,5 @@
+const jetpack = require('fs-jetpack')
+const path = require('path')
 const dbService = require('./dbService')
 
 async function getUser(userId) {
@@ -83,9 +85,16 @@ async function editUser({
     await dbService.query('UPDATE user SET roleId = ?, teamId = ?, firstName = ?, lastName = ?, phoneNumber = ? WHERE userId = ?', [ roleId, teamId, firstName, lastName, phoneNumber, userId ])
 }
 
+async function setProfileImage({ userId, filename, fileBuffer }) {
+    // maybe break out hosted dir location into a util or a service or osmething?
+    jetpack.write(path.resolve(__dirname, `../../../hosted/users/${userId}/${filename}`), fileBuffer)
+    await dbService.query('UPDATE user SET profileImageFile = ?', [filename])
+}
+
 module.exports = {
     getUser,
     getUsers,
     createUser,
-    editUser
+    editUser,
+    setProfileImage,
 }

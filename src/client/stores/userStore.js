@@ -77,6 +77,16 @@ export default store({
                 phoneNumber,
             })
             emit.ReceivedUsers({ users })
-        }
+        },
+        async UploadedImageFile({ userId, file }) {
+            let formData = new FormData()
+            formData.append('file', file)
+            const { users } = await requester.post(`/api/uploadProfileImage/${userId}`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+            })
+            emit.ReceivedUsers({ users })
+        },
     }
 })
