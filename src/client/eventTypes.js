@@ -15,4 +15,5 @@ export default [
     'ClickedConfirmCreateTeam',
     'ReceivedTeams',
     'UploadedImageFile',
+    'ClickedResetPassword',
 ]

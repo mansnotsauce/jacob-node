@@ -131,7 +131,12 @@ export default view(function EditUser({ match }) {
                             <div className="h5 greyColor">
                                 <b id="passload">Password</b>
                                 <br />
-                                <button className="resetBtn" param="<?php echo $data['account']['user_id']; ?>">
+                                <button className="resetBtn" onClick={() => {
+                                    if (!confirm("Are you sure you want to reset this user's password? A new password will be emailed to them.")) {
+                                        return
+                                    }
+                                    emit.ClickedResetPassword({ userId: user.userId })
+                                }}>
                                     Reset Password
                                 </button>
                             </div>

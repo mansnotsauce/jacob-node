@@ -88,5 +88,9 @@ export default store({
             })
             emit.ReceivedUsers({ users })
         },
+        async ClickedResetPassword({ userId }) {
+            await requester.post('/api/resetPassword', { userId })
+            alert('Password reset completed')
+        }
     }
 })

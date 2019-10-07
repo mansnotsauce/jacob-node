@@ -152,9 +152,18 @@ router.post('/api/uploadProfileImage/:userId', async (ctx) => {
         })
     })
     await userService.setProfileImage({ userId, filename, fileBuffer })
-    console.log("done it")
     const users = await userService.getUsers()
     ctx.body = { users }
+})
+
+router.post('/api/resetPassword', async (ctx) => {
+    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    if (!user.isAdmin) {
+        throw new Error('Unauthorized create user request')
+    }
+    const { userId } = ctx.request.body
+    await sessionService.resetPassword({ userId })
+    ctx.body = { ok: true }
 })
 
 // router.get('/api/teams', async (ctx) => {

@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-async function sendEmail({ from, to, subject, body, painText = false }) {
+async function sendEmail({ from, to, subject, body, plainText = false }) {
     const info = await transporter.sendMail({
         from,
         to,

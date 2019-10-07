@@ -1,6 +1,9 @@
 const jetpack = require('fs-jetpack')
 const path = require('path')
+const config = require('../../../config')
 const dbService = require('./dbService')
+const cryptoService = require('./cryptoService')
+const emailService = require('./emailService')
 
 async function getUser(userId) {
     const [ user ] = await dbService.query(`
@@ -71,7 +74,9 @@ async function createUser({
     teamId,
     profileImageFile = null,
 }) {
-    await dbService.query('INSERT INTO user (firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile) VALUES (?, ?, ?, ?, ?, ?, ?)', [ firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile ])
+    const { insertId } = await dbService.query('INSERT INTO user (firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile) VALUES (?, ?, ?, ?, ?, ?, ?)', [ firstName, lastName, roleId, email, phoneNumber, teamId, profileImageFile ])
+    const userId = insertId
+    await resetPassword({ userId })
 }
 
 async function editUser({
@@ -91,10 +96,33 @@ async function setProfileImage({ userId, filename, fileBuffer }) {
     await dbService.query('UPDATE user SET profileImageFile = ?', [filename])
 }
 
+async function resetPassword({ userId }) {
+    const [ row ] = await dbService.query('SELECT email FROM user WHERE userId = ?', [userId])
+    if (!row) {
+        throw new Error(`User with id "${userId}" could not be found`)
+    }
+    const { email } = row
+    const salt = cryptoService.getRandomSalt()
+    const password = cryptoService.getRandomSalt()
+    const hash = cryptoService.getHash(password, salt)
+    await dbService.query('UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE userId = ?', [hash, salt, userId])
+    await emailService.sendEmail({
+        from: 'noreply@' + config.domainName,
+        to: email,
+        subject: 'password update',
+        body: `
+Your password has been updated.
+
+Your new password is: ${password}
+`
+    })
+}
+
 module.exports = {
     getUser,
     getUsers,
     createUser,
     editUser,
     setProfileImage,
+    resetPassword,
 }

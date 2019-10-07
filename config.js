@@ -5,7 +5,7 @@ const config = {
 
     isDevMode,
 
-    domainName  : 'indexr.io',
+    domainName  : 'horizonpwr.com',
     port        : isDevMode ? 8080 : 443,
 
     dbHost      : 'localhost',
