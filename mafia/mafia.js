@@ -5,8 +5,6 @@ configure({
     enforceActions: 'always'
 })
 
-const view = observer
-
 function toJsIfObservable(value) {
     try {
         if (isObservable(value)) {
@@ -40,30 +38,18 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
     let stores = []
     const emit = {}
 
-    let emitCount = 1
     eventTypes.forEach((eventType) => {
         emit[eventType] = action((event) => {
-            if (emitCount === 1) {
-                eventTypes
-                    .filter(eventType => !stores.some(store => store.eventListeners[eventType]))
-                    .forEach(eventType => console.warn(`Event type "${eventType}" is not used on any store.`))
-            }
-            stores.forEach((store) => {
-                const listener = store.eventListeners[eventType]
-                if (!listener) {
-                    return
-                }
-                middleware({
-                    emitCount,
-                    eventType,
-                    event,
-                    store,
-                    listener
-                }, function next () {
-                    store.eventListeners[eventType](event)
+            middleware({
+                eventType,
+                event,
+                stores,
+            }, function next () {
+                stores.forEach((store) => {
+                    const listener = store.eventListeners[eventType]
+                    listener && listener(event)
                 })
             })
-            emitCount++
         })
     })
 
@@ -99,7 +85,7 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
     return {
         emit,
         store,
-        view,
+        view: observer,
         toJS: toJsIfObservable,
         deafen,
     }

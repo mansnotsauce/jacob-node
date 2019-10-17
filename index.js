@@ -1,9 +1,12 @@
+require('./scripts/prebuild') // for side-effects
+
 const { resolve } = require('path')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
 const config = require('./config')
 const koaServer = require('./src/server/koaServer')
+const socketServer = require('./src/server/socketServer')
 
 const koaServerCallback = koaServer.callback()
 
@@ -44,17 +47,20 @@ if (config.isDevMode) {
 
 const server = createServer(options, createServerCallback)
 
+// redirect to https
 if (!config.isDevMode && config.port !== 80) {
     http.createServer((req, res) => {
         console.log("REQ URL", req.url)
-        if (req.url.indexOf('/hosted/') === 0) {
-            createServerCallback(req, res)
-            return
-        }
+        // if (req.url.indexOf('/hosted/') === 0) { // allow access to hosted resources over http
+        //     createServerCallback(req, res)
+        //     return
+        // }
         res.writeHead(302, {'Location': `https://${config.domainName}` + req.url})
         res.end()
     }).listen(80)
 }
+
+socketServer.initialize(server)
 
 server.listen(config.port, () => {
     console.log(`Server listening on port ${config.port}`)

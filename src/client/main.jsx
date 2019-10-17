@@ -1,3 +1,4 @@
+import './devToolMods'
 import 'babel-polyfill'
 import '../../assets/js/jquery'
 import { render } from 'react-dom'
