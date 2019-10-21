@@ -17,4 +17,5 @@ module.exports = [
     'ReceivedTeams',
     'UploadedImageFile',
     'ClickedResetPassword',
+    'ChangedUserSearchString',
 ]

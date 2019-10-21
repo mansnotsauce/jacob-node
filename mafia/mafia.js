@@ -1,5 +1,5 @@
-const { configure, action, extendObservable, isObservable, toJS } = require('mobx')
-const { observer } = require('mobx-react')
+const { configure, action, extendObservable, isObservable, toJS, autorun, reaction } = require('mobx')
+const { observer } = require('mobx-react') // todo: consider testing with version 6
 
 configure({
     enforceActions: 'always'
@@ -43,7 +43,6 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
             middleware({
                 eventType,
                 event,
-                stores,
             }, function next () {
                 stores.forEach((store) => {
                     const listener = store.eventListeners[eventType]
@@ -82,11 +81,18 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
         stores = stores.filter(s => s !== store)
     }
 
+    function getStores () {
+        return stores.slice()
+    }
+
     return {
         emit,
         store,
         view: observer,
         toJS: toJsIfObservable,
         deafen,
+        getStores,
+        autorun,
+        reaction,
     }
 }

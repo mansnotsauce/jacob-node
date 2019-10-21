@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prebuild": "node scripts/prebuild",
+    "prebuild": "cross-env NODE_ENV=production node scripts/prebuild",
     "test": "node test",
     "start": "nodemon --watch index.js --watch src/server index.js",
     "start:prod": "npm run deploy && cross-env NODE_ENV=production nodemon --watch index.js --watch src/server --watch build/client index.js",

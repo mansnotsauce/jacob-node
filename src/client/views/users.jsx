@@ -5,14 +5,21 @@ import teamStore from '../stores/teamStore'
 
 const UserTableBody = view(() => {
 
-    const { users, sortBy, reverseSort } = userStore
+    const { users, sortBy, reverseSort, userSearchString } = userStore
 
-    let sortedUsers = users.slice()
+    let sortedUsers = users.slice().sort((u1, u2) => Number(u1.userId) < Number(u2.userId) ? 1 : -1) // higher IDs are more recent so we want them first as per the spec
     if (sortBy) {
         sortedUsers = sortedUsers.sort((u1, u2) => sortBy ? (u1[sortBy] > u2[sortBy] ? 1 : -1) : 0)
         if (reverseSort) {
             sortedUsers = sortedUsers.reverse()
         }
+    }
+    if (userSearchString) {
+        sortedUsers = sortedUsers.filter(user => {
+            return ['firstName', 'lastName', 'email', 'phoneNumber', 'roleName', 'teamName'].some(field => {
+                return user[field] && user[field].toLowerCase().includes(userSearchString.toLowerCase())
+            })
+        })
     }
 
     return (

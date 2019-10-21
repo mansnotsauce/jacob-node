@@ -8,6 +8,7 @@ export default store({
     addUserRedirectEngaged: false,
     sortBy: null,
     reverseSort: false,
+    userSearchString: '',
 
     async _reloadUsers() {
         const { users } = await requester.get('/api/users')
@@ -91,6 +92,9 @@ export default store({
         async ClickedResetPassword({ userId }) {
             await requester.post('/api/resetPassword', { userId })
             alert('Password reset completed')
+        },
+        ChangedUserSearchString({ userSearchString }) {
+            this.userSearchString = userSearchString
         }
     }
 })
