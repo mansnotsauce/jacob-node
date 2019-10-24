@@ -37,9 +37,9 @@ const Routes = view(function Routes() {
     // leave this -- it causes this component to rerender when route changes
     const { pathname } = routeStore
     
-    const { isLoggedIn } = sessionStore
+    const { isActive } = sessionStore
 
-    if (isLoggedIn === null) {
+    if (isActive === null) {
         return <div>Loading...</div>
     }
     
@@ -48,13 +48,13 @@ const Routes = view(function Routes() {
             <Header />
             <Switch>
                 <Route path="/login" render={() => {
-                    return  isLoggedIn ? <Redirect to="/home" /> : <Login />
+                    return  isActive ? <Redirect to="/home" /> : <Login />
                 }} />
                 <Route path="/home" render={() => {
-                    return isLoggedIn ? <HomeWithChildRoutes /> : <Redirect to="/login" />
+                    return isActive ? <HomeWithChildRoutes /> : <Redirect to="/login" />
                 }} />
                 <Route path="/" render={() => {
-                    return isLoggedIn ? <HomeWithChildRoutes /> : <Redirect to="/login" />
+                    return isActive ? <HomeWithChildRoutes /> : <Redirect to="/login" />
                 }} />
             </Switch>
             <Footer />

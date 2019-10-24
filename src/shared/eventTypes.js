@@ -18,4 +18,8 @@ module.exports = [
     'UploadedImageFile',
     'ClickedResetPassword',
     'ChangedUserSearchString',
+    'ClickedSelectAllUsersCheckbox',
+    'ClickedSelectUserCheckbox',
+    'ClickedDeleteUsers',
+    'DetectedServerError',
 ]

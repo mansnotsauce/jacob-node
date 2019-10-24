@@ -13,7 +13,7 @@ export default view(function AdminDashboard() {
     return (
         <section className="pwrstation-table">
             <div className="section-table-name">PWRStation</div>
-            <div className="row" style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="row">
                 <div className="col-xs-6 bulk-buttons">                      
                     <input
                         type="text"
@@ -22,8 +22,14 @@ export default view(function AdminDashboard() {
                         onChange={e => emit.ChangedUserSearchString({ userSearchString: e.target.value })}
                         value={userStore.userSearchString}
                     />
+                    <button
+                        className="deleteSelectedBtn"
+                        onClick={() => emit.ClickedDeleteUsers({
+                            userIds: userStore.users.filter(u => userStore.selectedUsers[u.userId]).map(u => u.userId)
+                        })}
+                    >Delete Selected</button>
                 </div>
-                <div className="col-xs-12 alignRight">
+                <div className="col-xs-6 alignRight">
                     <Link to="/createUser/">
                         <button className="addUserBtn">
                             Create New User

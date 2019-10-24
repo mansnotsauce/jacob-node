@@ -34,7 +34,11 @@ const UserTableBody = view(() => {
                         <tr key={user.userId} className={idx % 2 ? '' : 'even-column'}>
                             <td>
                                 <div className="checkbox">
-                                    <span param={user.userId} />
+                                    <span
+                                        param="all"
+                                        className={userStore.selectedUsers[user.userId] ? 'checked' : ''} 
+                                        onClick={() => emit.ClickedSelectUserCheckbox({ userId: user.userId })}
+                                    />
                                 </div>
                             </td>
                             <td>
@@ -90,12 +94,20 @@ const UserTableHead = view(() => {
     return (
         <thead>
             <tr>
-                <th><div className="checkbox"><span param="all"></span></div></th>{/*TODO*/}
+                <th>
+                    <div className="checkbox">
+                        <span
+                            param="all"
+                            className={userStore.users.every(user => userStore.selectedUsers[user.userId]) ? 'checked' : ''} 
+                            onClick={() => emit.ClickedSelectAllUsersCheckbox()}
+                        />
+                    </div>
+                </th>
                 {
                     options.map(({ sortBy, label }) => {
                         let className = 'greyColor'
                         if (userStore.sortBy === sortBy) {
-                            className += ' active'
+                            className = 'sort greyColor active'
                         }
                         return (
                             <th

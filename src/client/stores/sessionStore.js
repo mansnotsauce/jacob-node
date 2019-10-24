@@ -3,13 +3,13 @@ import requester from '../requester'
 
 export default store({
 
-    isLoggedIn  : null,
-    user        : null,
+    isActive  : null,
+    user      : null,
 
     eventListeners: {
         async ClickedLogin({ email, password }) {
-            const { isLoggedIn, entities } = await requester.post('/api/login', { email, password })
-            if (isLoggedIn) {
+            const { isActive, entities } = await requester.post('/api/login', { email, password })
+            if (isActive) {
                 emit.LoginConfirmed({ entities })
             }
             else {
@@ -17,10 +17,10 @@ export default store({
             }
         },
         LoginDenied() {
-            this.isLoggedIn = false
+            this.isActive = false
         },
         LoginConfirmed({ entities }) {
-            this.isLoggedIn = true
+            this.isActive = true
             const { user } = entities
             this.user = user
         },
@@ -29,13 +29,17 @@ export default store({
             window.location.reload(true) // remove cookies
         },
         async Initialized() {
-            const { isLoggedIn, entities } = await requester.get('/api/userStatus')
-            if (isLoggedIn) {
+            const { isActive, entities } = await requester.get('/api/sessionStatus')
+            if (isActive) {
                 emit.LoginConfirmed({ entities })
             }
             else {
                 emit.LoginDenied()
             }
+        },
+        DetectedServerError({ errorName, errorMessage, errorStack }) {
+            console.log({ errorName, errorMessage, errorStack })
+            alert(`Error detected: ${errorName}: ${errorMessage}`)
         },
     }
 })

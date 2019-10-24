@@ -9,6 +9,7 @@ export default store({
     sortBy: null,
     reverseSort: false,
     userSearchString: '',
+    selectedUsers: {},
 
     async _reloadUsers() {
         const { users } = await requester.get('/api/users')
@@ -94,7 +95,21 @@ export default store({
             alert('Password reset completed')
         },
         ChangedUserSearchString({ userSearchString }) {
+            this.selectedUsers = {}
             this.userSearchString = userSearchString
-        }
+        },
+        ClickedSelectUserCheckbox({ userId }) {
+            this.selectedUsers[userId] = !this.selectedUsers[userId]
+        },
+        ClickedSelectAllUsersCheckbox() {
+            if (this.users.every(user => this.selectedUsers[user.userId])) {
+                this.selectedUsers = {}
+            }
+            else {
+                this.users.forEach(user => {
+                    this.selectedUsers[user.userId] = true
+                })
+            }
+        },
     }
 })

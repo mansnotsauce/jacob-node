@@ -28,7 +28,12 @@ const schemaQueries = [
         roleName varchar(255),
         isAdmin tinyint(1) NOT NULL DEFAULT 0,
         isOnboarder tinyint(1) NOT NULL DEFAULT 0
-    )`
+    )`,
+    `alter table user add column deleted tinyint(1) NOT NULL DEFAULT 0`,
+    `alter table user 
+        add column approved tinyint(1) NOT NULL DEFAULT 0,
+        add column percentComplete int
+    `,
 ]
 
 async function initialize(dbService) {

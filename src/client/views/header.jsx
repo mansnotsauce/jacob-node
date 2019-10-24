@@ -5,7 +5,7 @@ export default view(function Header() {
     return (
         <div id="header">
             {
-                sessionStore.isLoggedIn ?
+                sessionStore.isActive ?
                     <div id="signoutbox">
                         <a onClick={() => emit.ClickedLogout()}>
                             <span className="signout">Sign out</span>

@@ -45,16 +45,16 @@ router.post('/api/login', async (ctx) => {
     const entities = await getEagerlyLoadedEntities(user)
     ctx.cookies.set(constants.SESSION_KEY_COOKIE_NAME, sessionKey, { overwrite: true })
     ctx.body = {
-        isLoggedIn: true,
+        isActive: true,
         entities,
     }
 })
 
-router.get('/api/userStatus', async (ctx) => {
-    const { isLoggedIn, user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-    const entities = isLoggedIn ? await getEagerlyLoadedEntities(user) : {}
+router.get('/api/sessionStatus', async (ctx) => {
+    const { isActive, user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const entities = isActive ? await getEagerlyLoadedEntities(user) : {}
     ctx.body = {
-        isLoggedIn,
+        isActive,
         entities,
     }
 })
@@ -65,7 +65,7 @@ router.post('/api/logout', async (ctx) => {
 })    
 
 // router.get('/api/users', async (ctx) => {
-//     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+//     const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
 //     if (!user.isAdmin) {
 //         throw new Error('Unauthorized get users request')
 //     }
@@ -74,7 +74,7 @@ router.post('/api/logout', async (ctx) => {
 // })
 
 router.post('/api/createUser', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
@@ -99,7 +99,7 @@ router.post('/api/createUser', async (ctx) => {
 })
 
 router.post('/api/editUser', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
@@ -124,7 +124,7 @@ router.post('/api/editUser', async (ctx) => {
 })
 
 router.post('/api/createTeam', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
@@ -135,7 +135,7 @@ router.post('/api/createTeam', async (ctx) => {
 })
 
 router.post('/api/uploadProfileImage/:userId', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
@@ -157,7 +157,7 @@ router.post('/api/uploadProfileImage/:userId', async (ctx) => {
 })
 
 router.post('/api/resetPassword', async (ctx) => {
-    const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+    const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
     if (!user.isAdmin) {
         throw new Error('Unauthorized create user request')
     }
@@ -167,7 +167,7 @@ router.post('/api/resetPassword', async (ctx) => {
 })
 
 // router.get('/api/teams', async (ctx) => {
-//     const { user } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+//     const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
 //     if (!user.isAdmin && !user.isOnboarder) {
 //         throw new Error('Unauthorized get users request')
 //     }

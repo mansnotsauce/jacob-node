@@ -22,8 +22,8 @@ const openUrls = [ // urls that don't require the user to be logged in
 
 async function authMiddleware(ctx, next) {
     if (!openUrls.some(url => ctx.request.url.indexOf(url) === 0)) {
-        const { isLoggedIn } = await sessionService.getUserStatus(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
-        if (!isLoggedIn) {
+        const { isActive } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
+        if (!isActive) {
             ctx.status = 401
             return
         }

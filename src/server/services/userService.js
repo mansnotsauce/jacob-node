@@ -5,63 +5,48 @@ const dbService = require('./dbService')
 const cryptoService = require('./cryptoService')
 const emailService = require('./emailService')
 
+const getUsersQuery = `
+    SELECT
+        userId,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        approved,
+        percentComplete,
+        user.teamId,
+        profileImageFile,
+        team.teamName,
+        user.roleId,
+        role.roleName,
+        role.isAdmin,
+        role.isOnboarder
+    FROM
+        user
+    LEFT JOIN
+        team
+    ON
+        user.teamId = team.teamId
+    LEFT JOIN
+        role
+    ON
+        user.roleId = role.roleId
+    WHERE
+        deleted <> 1
+`
+
 async function getUser(userId) {
     const [ user ] = await dbService.query(`
-        SELECT
-            userId,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            user.teamId,
-            profileImageFile,
-            team.teamName,
-            user.roleId,
-            role.roleName,
-            role.isAdmin,
-            role.isOnboarder
-        FROM
-            user
-        LEFT JOIN
-            team
-        ON
-            user.teamId = team.teamId
-        LEFT JOIN
-            role
-        ON
-            user.roleId = role.roleId
-        WHERE
-            userId = ?
+    
+        ${getUsersQuery}
+        AND userId = ?
+
     `, [ userId ])
     return user
 }
 
 async function getUsers() {
-    const users = await dbService.query(`
-        SELECT
-            userId,
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            user.teamId,
-            profileImageFile,
-            team.teamName,
-            user.roleId,
-            role.roleName,
-            role.isAdmin,
-            role.isOnboarder
-        FROM
-            user
-        LEFT JOIN
-            team
-        ON
-            user.teamId = team.teamId
-        LEFT JOIN
-            role
-        ON
-            user.roleId = role.roleId
-    `)
+    const users = await dbService.query(getUsersQuery)
     return users
 }
 
@@ -88,6 +73,10 @@ async function editUser({
     phoneNumber,
 }) {
     await dbService.query('UPDATE user SET roleId = ?, teamId = ?, firstName = ?, lastName = ?, phoneNumber = ? WHERE userId = ?', [ roleId, teamId, firstName, lastName, phoneNumber, userId ])
+}
+
+async function deleteUser({ userId }) {
+    await dbService.query('UPDATE user SET deleted = 1 WHERE userId = ?', [userId])
 }
 
 async function setProfileImage({ userId, filename, fileBuffer }) {
@@ -125,4 +114,5 @@ module.exports = {
     editUser,
     setProfileImage,
     resetPassword,
+    deleteUser,
 }

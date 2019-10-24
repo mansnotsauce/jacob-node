@@ -49,17 +49,26 @@ function initialize(server) {
             }
         })
 
-        ws.on('message', message => {
+        ws.on('message', async (message) => {
             const { topic, content } = JSON.parse(message)
             if (topic === 'ClientEventEmitted') {
                 const { eventType, event } = content
-                socketRouter.dispatch({
-                    eventType,
-                    ctx: koaContext,
-                    event,
-                    emitBack,
-                    emitToId: {}, // TODO // also don't allow to emit back serverSubscriptionEventTypes
-                })
+                try {
+                    await socketRouter.dispatch({
+                        eventType,
+                        ctx: koaContext,
+                        event,
+                        emitBack,
+                        emitToId: {}, // TODO // also don't allow to emit back serverSubscriptionEventTypes
+                    })
+                }
+                catch (error) {
+                    emitBack.DetectedServerError({
+                        errorName   : error.name,
+                        errorMessage: error.message,
+                        errorStack  : error.stack.split('\n'),
+                    })
+                }
             }
             else {
                 console.log(`Unrecognized topic: "${topic}"`)
