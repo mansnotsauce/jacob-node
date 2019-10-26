@@ -1,15 +1,11 @@
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import mafia from '../../mafia/mafia'
-import eventTypes from '../shared/eventTypes'
 import { serverSubscriptionEventTypes } from './serverGenerated'
-
-const _log = console.log
-console.log = (...args) => _log(...args.map(toJS))
 
 const socketUrl = `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/socket`
 const socket = new ReconnectingWebSocket(socketUrl)
 
-export const { emit, store, view, toJS } = mafia(eventTypes, ({ eventType, event }, next) => {
+export const { emit, store, view, toJS } = mafia(({ eventType, event }, next) => {
 
     if (serverSubscriptionEventTypes.includes(eventType)) {
         socket.send(JSON.stringify({

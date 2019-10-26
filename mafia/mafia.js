@@ -21,13 +21,10 @@ function isObject (value) {
     return !!value && typeof value === 'object' && !Array.isArray(value)
 }
 
-module.exports = function Mafia (eventTypes, middleware = function (_, next) { next() }) {
+module.exports = function Mafia (middleware = function (_, next) { next() }) {
 
-    if (!Array.isArray(eventTypes) || eventTypes.some(eventType => typeof eventType !== 'string')) {
-        throw new Error('first argument to Mafia ("eventTypes") must be an array of strings')
-    }
     if (typeof middleware !== 'function') {
-        throw new Error('second optional argument to Mafia ("middleware") must be a function')
+        throw new Error('first argument to Mafia ("middleware") must be a function')
     }
 
     // events are emitted to stores in the order that stores are appended to this array.
@@ -36,20 +33,24 @@ module.exports = function Mafia (eventTypes, middleware = function (_, next) { n
     // hence it is fine to reference stores in other stores,
     // but it is NOT fine to do dynamic store creation (in the present incarnation of this lib)
     let stores = []
-    const emit = {}
-
-    eventTypes.forEach((eventType) => {
-        emit[eventType] = action((event) => {
-            middleware({
-                eventType,
-                event,
-            }, function next () {
-                stores.forEach((store) => {
-                    const listener = store.eventListeners[eventType]
-                    listener && listener(event)
+    const _emit = {}
+    const emit = new Proxy(_emit, {
+        get(_emit, eventType) {
+            if (!_emit[eventType]) {
+                _emit[eventType] = action((event) => {
+                    middleware({
+                        eventType,
+                        event,
+                    }, function next () {
+                        stores.forEach((store) => {
+                            const listener = store.eventListeners[eventType]
+                            listener && listener(event)
+                        })
+                    })
                 })
-            })
-        })
+            }
+            return _emit[eventType]
+        }
     })
 
     function store (storeBase) {

@@ -2,7 +2,6 @@ const url = require('url')
 const WebSocket = require('ws')
 const koaServer = require('./koaServer')
 const socketRouter = require('./socketRouter')
-const eventTypes = require('../shared/eventTypes')
 
 const serverSubscriptionEventTypes = socketRouter.getServerSubscriptionEventTypes()
 
@@ -31,21 +30,25 @@ function initialize(server) {
         ws.on('pong', heartbeat)
         const koaContext = koaServer.createContext.call(koaServer, request, head)
         // ws.send('hello')
-        const emitBack = {}
-        eventTypes.forEach(eventType => {
-            emitBack[eventType] = (event) => {
-                ws.send(JSON.stringify({
-                    topic: 'ServerEventEmitted',
-                    content: {
-                        eventType,
-                        event,
+        const _emitBack = {}
+        const emitBack = new Proxy(_emitBack, {
+            get(_emitBack, eventType) {
+                if (serverSubscriptionEventTypes.includes(eventType)) {
+                    console.log(`The server is subscribed to events with type "${eventType}", and so is not allowed to emit them (to prevent an infinite loop)`)
+                    return
+                }
+                if (!_emitBack[eventType]) {
+                    _emitBack[eventType] = (event) => {
+                        ws.send(JSON.stringify({
+                            topic: 'ServerEventEmitted',
+                            content: {
+                                eventType,
+                                event,
+                            }
+                        }))
                     }
-                }))
-            }
-        })
-        serverSubscriptionEventTypes.forEach(eventType => {
-            emitBack[eventType] = () => {
-                console.log(`The server is subscribed to events with type "${eventType}", and so is not allowed to emit them (to prevent an infinite loop)`)
+                }
+                return _emitBack[eventType]
             }
         })
 
