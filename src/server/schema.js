@@ -34,6 +34,7 @@ const schemaQueries = [
         add column approved tinyint(1) NOT NULL DEFAULT 0,
         add column percentComplete int
     `,
+    `alter table user change column approved isApproved tinyint(1) not null default 0`,
 ]
 
 async function initialize(dbService) {

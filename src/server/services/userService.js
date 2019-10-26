@@ -12,7 +12,7 @@ const getUsersQuery = `
         lastName,
         email,
         phoneNumber,
-        approved,
+        isApproved,
         percentComplete,
         user.teamId,
         profileImageFile,
