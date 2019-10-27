@@ -3,7 +3,7 @@ const WebSocket = require('ws')
 const koaServer = require('./koaServer')
 const socketRouter = require('./socketRouter')
 
-const serverSubscriptionEventTypes = socketRouter.getServerSubscriptionEventTypes()
+const eventTypesSubscribedTo = socketRouter.getEventTypesSubscribedTo()
 
 function noop() {}
 
@@ -33,7 +33,7 @@ function initialize(server) {
         const _emitBack = {}
         const emitBack = new Proxy(_emitBack, {
             get(_emitBack, eventType) {
-                if (serverSubscriptionEventTypes.includes(eventType)) {
+                if (eventTypesSubscribedTo.includes(eventType)) {
                     console.log(`The server is subscribed to events with type "${eventType}", and so is not allowed to emit them (to prevent an infinite loop)`)
                     return
                 }
@@ -62,7 +62,7 @@ function initialize(server) {
                         ctx: koaContext,
                         event,
                         emitBack,
-                        emitToId: {}, // TODO // also don't allow to emit back serverSubscriptionEventTypes
+                        emitToId: {}, // TODO
                     })
                 }
                 catch (error) {

@@ -22,7 +22,7 @@ const listeners = {
 }
 
 module.exports = {
-    getServerSubscriptionEventTypes: () => Object.keys(listeners),
+    getEventTypesSubscribedTo: () => Object.keys(listeners),
     dispatch: async ({ eventType, ctx, event, emitBack, emitToId }) => {
         const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))
         const { auth, cb } = listeners[eventType]

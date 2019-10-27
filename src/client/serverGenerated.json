@@ -1,5 +1,5 @@
 {
-    "serverSubscriptionEventTypes": [
+    "eventTypesSubscribedToByServer": [
         "ClickedDeleteUsers"
     ]
 }
