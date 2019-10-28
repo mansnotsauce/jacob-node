@@ -1,6 +1,7 @@
 const constants = require('../shared/constants')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
+const dbService = require('./services/dbService')
 
 const listeners = {
 
@@ -18,6 +19,16 @@ const listeners = {
             emitBack.ReceivedUsers({ users })
         }
     },
+
+    ClickedApproveUser: {
+        auth: user => user.isAdmin,
+        async cb ({ event, emitBack }) {
+            const { userId } = event
+            await dbService.query(`UPDATE user SET isApproved = 1 WHERE userId = ?`, [userId])
+            const users = await userService.getUsers()
+            emitBack.ReceivedUsers({ users })
+        }
+    }
 
 }
 
