@@ -28,6 +28,7 @@
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "babel-polyfill": "^6.26.0",
     "cross-env": "^5.2.0",
+    "deasync": "^0.1.15",
     "fs-jetpack": "^2.2.2",
     "ip": "^1.1.5",
     "koa": "^2.5.0",

@@ -16,7 +16,7 @@ if (!config.isDevMode) {
 const openUrls = [ // urls that don't require the user to be logged in
     '/assets',
     '/api/login',
-    '/api/userStatus',
+    '/api/sessionStatus',
     '/api/roles',
 ]
 
