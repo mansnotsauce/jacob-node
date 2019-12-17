@@ -2,6 +2,7 @@ const constants = require('../shared/constants')
 const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
 const dbService = require('./services/dbService')
+const salesforceService = require('./services/salesforceService')
 
 const listeners = {
 
@@ -28,7 +29,16 @@ const listeners = {
             const users = await userService.getUsers()
             emitBack.ReceivedUsers({ users })
         }
-    }
+    },
+
+    GetStats: {
+        auth: user => user.isApproved,
+        async cb ({ emitBack }) {
+            const stats = await salesforceService.getStats()
+            console.log(stats)
+            emitBack.ReceivedStats({ stats })
+        }
+    },
 
 }
 

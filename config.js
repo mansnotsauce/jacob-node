@@ -10,7 +10,7 @@ const config = {
 
     dbHost      : 'localhost',
     dbUser      : 'root',
-    dbPassword  : 'jcrgdybhceey',
+    dbPassword  : 'Claire69',
     dbName      : 'horizonpwr',
 }
 

@@ -1,6 +1,7 @@
 {
     "eventTypesSubscribedToByServer": [
         "ClickedDeleteUsers",
-        "ClickedApproveUser"
+        "ClickedApproveUser",
+        "GetStats"
     ]
 }

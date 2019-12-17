@@ -7,6 +7,7 @@ const sessionService = require('./services/sessionService')
 const userService = require('./services/userService')
 const teamService = require('./services/teamService')
 const roleService = require('./services/roleService')
+const salesforceService = require('./services/salesforceService')
 
 // assets directory structure is a rigid 1 level deep :P
 router.get('/assets/:assetType/:resource', async (ctx) => {
@@ -164,6 +165,12 @@ router.post('/api/resetPassword', async (ctx) => {
     const { userId } = ctx.request.body
     await sessionService.resetPassword({ userId })
     ctx.body = { ok: true }
+})
+
+router.get('/api/stats', async (ctx) => {
+    const { stats } = await salesforceService.otherStats()
+    console.log(stats)
+    ctx.body = { stats: stats }
 })
 
 // router.get('/api/teams', async (ctx) => {

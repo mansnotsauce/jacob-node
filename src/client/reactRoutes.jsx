@@ -9,6 +9,7 @@ import Footer from './views/footer'
 import Login from './views/login'
 import Home from './views/home'
 import AdminDashboard from './views/adminDashboard'
+import Leaderboard from './views/leaderboard'
 import CreateUser from './views/createUser'
 import EditUser from './views/editUser'
 
@@ -21,6 +22,13 @@ const HomeWithChildRoutes = view(function HomeWithChildRoutes() {
                         <div>
                             <AdminDashboard />
 
+                        </div>
+                    )
+                }} />
+                <Route path="/leaderboard" render={() => {
+                    return (
+                        <div>
+                            <Leaderboard />
                         </div>
                     )
                 }} />
