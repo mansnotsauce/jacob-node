@@ -33,8 +33,8 @@ const listeners = {
 
     GetStats: {
         auth: user => user.isApproved,
-        async cb ({ emitBack }) {
-            const stats = await salesforceService.getStats()
+        async cb ({ event, emitBack }) {
+            const stats = await salesforceService.getStats(event)
             console.log(stats)
             emitBack.ReceivedStats({ stats })
         }

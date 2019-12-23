@@ -167,11 +167,11 @@ router.post('/api/resetPassword', async (ctx) => {
     ctx.body = { ok: true }
 })
 
-router.get('/api/stats', async (ctx) => {
-    const { stats } = await salesforceService.otherStats()
-    console.log(stats)
-    ctx.body = { stats: stats }
-})
+// router.get('/api/stats', async (ctx) => {
+//     const { stats } = await salesforceService.otherStats()
+//     console.log(stats)
+//     ctx.body = { stats: stats }
+// })
 
 // router.get('/api/teams', async (ctx) => {
 //     const { user } = await sessionService.getSession(ctx.cookies.get(constants.SESSION_KEY_COOKIE_NAME))

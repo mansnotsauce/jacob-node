@@ -11,7 +11,7 @@ export default store({
                 if (this.stats === null) {
                     //const { stats } = await requester.get('/api/stats')
                     //emit.ReceivedStats({ stats })
-                    emit.GetStats()
+                    emit.GetStats({ start: '1000-01-01', end: '9999-12-31' })
                 }
             }
         },
