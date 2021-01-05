@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.0.0-beta.54",
     "@babel/preset-react": "^7.0.0",
     "async-busboy": "^0.7.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-plugin-react-require": "^3.0.1",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3",
     "babel-polyfill": "^6.26.0",
